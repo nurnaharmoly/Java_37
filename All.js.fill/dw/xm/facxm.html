@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+</head>
+
+<body>
+<script>
+var n;
+function calculatefactorial(n){
+	if(n==0){
+		return 1;
+		}
+	return n* calculatefactorial(n-1);
+	}
+var number = prompt("Enter the number ","1");
+alert(calculatefactorial(number));
+document.write("Factorial number ("+number+") " +"is "+calculatefactorial(number));
+</script>
+</body>
+</html>

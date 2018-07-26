@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+</head>
+
+<body>
+<div style="width:800px; margin:0 auto; background:#939; padding:20px;">
+<fieldset>
+<legend><h4>Form</h4></legend>
+<form action="display.html">
+<label>User Name</label>
+<input type="text" name="User&nbsp;Name" required><br>
+
+<label>Full Name</label>
+<input type="text" name="Full&nbsp;Name" required><br>
+
+<label>Password</label>
+<input type="password" name="password" ><br>
+
+<label>Re-type Password</label>
+<input type="password" name="password" ><br>
+
+<label>Gender</label>
+<input type="radio" name="Gender" value="Male">Male
+<input type="radio" name="Gender" value="Female">Female<br>
+
+
+<label>Hobby</label>
+<input type="checkbox" name="Hobby" value="Reading">Reading
+<input type="checkbox" name="Hobby" value="Writeing">Writeing
+<input type="checkbox" name="Hobby" value="Playing">Playing<br>
+
+<label>Language</label>
+<select name="Language">
+<option value="English">English</option>
+<option value="Bangla">Bangla</option>
+<option value="Aribic">Aribic</option>
+<option value="Japania">Japania</option><br>
+</select><br>
+<label>Comment</label>
+<textarea name="Comment"></textarea><br>
+<br>
+<br>
+<br>
+
+
+<input type="reset" value="Reset">
+<input type="submit" value="Send" onSubmit="sendFormData()">
+</form>
+</fieldset>
+</div>
+<script>
+function sendFormData(){
+	var value1 = "value1";
+	var value2 = "value2";
+	var value3 = "value3";
+	var value4 = "value4";
+	var value5 = "value5";
+	var value6 = "value6";
+	var value7 = "value7";
+	var value8 = "value8";
+	var queryString ="?para1="+value1+
+	"&para2="+value2+
+	"&para3="+value3+
+	"&para4="+value4+
+	"&para5="+value5+
+	"&para6="+value6+
+	"&para7="+value7+
+	"&para8="+value8;
+	window.location.href="display.html"+queryString;
+	}
+ 
+</script>
+</body>
+</html>

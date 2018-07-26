@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+<style>
+body{
+	background:#C6C;
+	font-family:Verdana;
+	}
+	h2{
+		font-size:24pt;
+		color:#00F;
+		font-weight:bold;
+		}
+	
+	a{color:#636;font-weight:bold;}		
+</style>
+<script>
+function fillIn(){
+	document.forms[0].elements[1].value="JavaScript is here!"
+	}
+</script>
+</head>
+
+<body bgcolor="#993333" onKeyPress="alert('This was set up in the body element.');">
+<center>
+<h2>Click on the link text, button, or text window.<br>Then press any key.</h2>
+<a href="#" ononKeyUp="alert('The<a href>did it!')">Link Text</a><p>
+<form>
+<input type=button value="Surprise me" onKeyPress="alert('You have to press the Surprise Me button first!')"><p>
+<input type=text size="20" onKeyDown="fillIn()">
+</form>
+</center>
+
+</body>
+</html>
