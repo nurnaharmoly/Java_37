@@ -1,0 +1,581 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Wed Aug 1 11:39:01 2018
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connent
+SP2-0042: unknown command "connent" - rest of line ignored.
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> create user russia identified by russia;
+
+User created.
+
+SQL> grant dba to russia
+  2  grant dba to russia;
+grant dba to russia
+*
+ERROR at line 2:
+ORA-00933: SQL command not properly ended
+
+
+SQL> grant dba to russia;
+
+Grant succeeded.
+
+SQL> create table department(d_id number(2), d_name varchar2(12));
+
+Table created.
+
+SQL> create sequence dep_seq increment by 10 start with 50 maxvalue 100 nocycle nocache;
+
+Sequence created.
+
+SQL> insert into department(d_id, d_name) values(dep_seq.nextval, 'Accounting');
+
+1 row created.
+
+SQL> insert into department(d_id, d_name) values(dep_seq.nextval, 'Management');
+
+1 row created.
+
+SQL> insert into department(d_id, d_name) values(dep_seq.nextval, 'marketing');
+
+1 row created.
+
+SQL> insert into department(d_id, d_name) values(dep_seq.nextval, 'Finance');
+
+1 row created.
+
+SQL> insert into department(d_id, d_name) values(dep_seq.nextval, 'English');
+
+1 row created.
+
+SQL> select * from department;
+
+      D_ID D_NAME
+---------- ------------
+        50 Accounting
+        60 Management
+        70 marketing
+        80 Finance
+        90 English
+
+SQL> drop table department;
+
+Table dropped.
+
+SQL> create table department(d_id number(2) primary key, d_name varchar2(12) not null);
+
+Table created.
+
+SQL> create table employees(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobile number(11) unique, dep_id number(2), constraint dep_emp_fk foreign key (dep_id) references department(d_id) );
+create table employees(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobile number(11) unique, dep_id number(2), constraint dep_emp_fk foreign key (dep_id) references department(d_id) )
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> create table employees(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobile_no number(12) unique, dep_id number(2), constraint dep_emp_fk foreign key (dep_id) references department(d_id) );
+create table employees(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobile_no number(12) unique, dep_id number(2), constraint dep_emp_fk foreign key (dep_id) references department(d_id) )
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> create table employees(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobileNo number(12) unique, dep_id number(2), constraint dep_emp_fk foreign key (dep_id) references department(d_id) );
+create table employees(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobileNo number(12) unique, dep_id number(2), constraint dep_emp_fk foreign key (dep_id) references department(d_id) )
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> create table employe(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobileNo number(12) unique, dep_id number(2), constraint dep_emp_fk foreign key (dep_id) references department(d_id) );
+
+Table created.
+
+SQL> insert into employe(e_id, e_name, salary, mobileNo, dep_id) values(dep_seq.nextval, 'English');
+insert into employe(e_id, e_name, salary, mobileNo, dep_id) values(dep_seq.nextval, 'English')
+                                                            *
+ERROR at line 1:
+ORA-00947: not enough values
+
+
+SQL> create sequence emp_seq increment by 5 start with 1 maxvalue 200 nocycle nocache;
+
+Sequence created.
+
+SQL> insert into employe(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'runa' 34000, 0173523525, 60);
+insert into employe(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'runa' 34000, 0173523525, 60)
+                                                                                           *
+ERROR at line 1:
+ORA-00917: missing comma
+
+
+SQL> insert into employe(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'runa', 34000, 0173523525, 60);
+insert into employe(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'runa', 34000, 0173523525, 60)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (SYSTEM.DEP_EMP_FK) violated - parent key not
+found
+
+
+SQL> insert into employe(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'runa', 34000, 0173523525, 60);
+insert into employe(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'runa', 34000, 0173523525, 60)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (SYSTEM.DEP_EMP_FK) violated - parent key not
+found
+
+
+SQL> create table department(d_id number(2) primary key, d_name varchar2(12) not null);
+create table department(d_id number(2) primary key, d_name varchar2(12) not null)
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> insert into department(d_id, d_name) values(dep_seq.nextval, 'English');
+insert into department(d_id, d_name) values(dep_seq.nextval, 'English')
+                                            *
+ERROR at line 1:
+ORA-01438: value larger than specified precision allowed for this column
+
+
+SQL> drop table department;
+drop table department
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys
+
+
+SQL> create table department(d_id number(2) primary key, d_name varchar2(12) not null);
+create table department(d_id number(2) primary key, d_name varchar2(12) not null)
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> create table department(d_id number(2) primary key, d_name varchar2(12) not null);
+create table department(d_id number(2) primary key, d_name varchar2(12) not null)
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL>
+SQL> create table dep(d_id number(2) primary key, d_name varchar2(12) not null);
+
+Table created.
+
+SQL> insert into dep(d_id, d_name) values(dep_seq.nextval, 'English');
+insert into dep(d_id, d_name) values(dep_seq.nextval, 'English')
+                                     *
+ERROR at line 1:
+ORA-08004: sequence DEP_SEQ.NEXTVAL exceeds MAXVALUE and cannot be instantiated
+
+
+SQL> create sequence der_seq increment by 10 start with 50 maxvalue 100 nocycle nocache;
+
+Sequence created.
+
+SQL> insert into dep(d_id, d_name) values(der_seq.nextval, 'English');
+
+1 row created.
+
+SQL> insert into dep(d_id, d_name) values(der_seq.nextval, 'Accounting');
+
+1 row created.
+
+SQL> insert into dep(d_id, d_name) values(der_seq.nextval, 'Marketing');
+
+1 row created.
+
+SQL> insert into dep(d_id, d_name) values(der_seq.nextval, 'Management');
+
+1 row created.
+
+SQL> insert into dep(d_id, d_name) values(der_seq.nextval, 'Mana');
+
+1 row created.
+
+SQL> insert into dep(d_id, d_name) values(der_seq.nextval, 'reiiee');
+insert into dep(d_id, d_name) values(der_seq.nextval, 'reiiee')
+                                     *
+ERROR at line 1:
+ORA-01438: value larger than specified precision allowed for this column
+
+
+SQL> create table emp(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobileNo number(12) unique, dep_id number(2), constraint dep_emp_fk foreign key (dep_id) references dep(d_id) );
+create table emp(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobileNo number(12) unique, dep_id number(2), constraint dep_emp_fk foreign key (dep_id) references dep(d_id) )
+                                                                                                                                                                            *
+ERROR at line 1:
+ORA-02264: name already used by an existing constraint
+
+
+SQL> create table emp(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobileNo number(12) unique, dep_id number(2), constraint d_emp_fk foreign key (dep_id) references dep(d_id) );
+
+Table created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'runa', 34000, 0173523525, 60);
+
+1 row created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'tiani', 34300, 0173544425, 40);
+insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'tiani', 34300, 0173544425, 40)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (SYSTEM.D_EMP_FK) violated - parent key not
+found
+
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'tiani', 34300, 0173544425, 50);
+
+1 row created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'ruti', 34300, 0173544425, 70 );
+insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'ruti', 34300, 0173544425, 70 )
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C007118) violated
+
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'ruti', 34300, 0173543555, 70 );
+
+1 row created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'roni', 35460, 01567743555, 80 );
+
+1 row created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'rrita', 35460, 0156774445, 80 );
+
+1 row created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'rtyua', 35460, 0167774445, 80 );
+
+1 row created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'rsdsa', 35460, 0145454445, 60 );
+
+1 row created.
+
+SQL> select * from emp;
+
+      E_ID E_NAME           SALARY   MOBILENO     DEP_ID
+---------- ------------ ---------- ---------- ----------
+        11 runa              34000  173523525         60
+        21 tiani             34300  173544425         50
+        31 ruti              34300  173543555         70
+        36 roni              35460 1567743555         80
+        41 rrita             35460  156774445         80
+        46 rtyua             35460  167774445         80
+        51 rsdsa             35460  145454445         60
+
+7 rows selected.
+
+SQL> update dep set d_name = football where d_id =50;
+update dep set d_name = football where d_id =50
+                        *
+ERROR at line 1:
+ORA-00904: "FOOTBALL": invalid identifier
+
+
+SQL> update dep set d_name = 'football' where d_id =50;
+
+1 row updated.
+
+SQL> select * from dep;
+
+      D_ID D_NAME
+---------- ------------
+        50 football
+        60 Accounting
+        70 Marketing
+        80 Management
+        90 Mana
+
+SQL> update emp set e_name ='russia' where e_id = 51;
+
+1 row updated.
+
+SQL> select * from emp;
+
+      E_ID E_NAME           SALARY   MOBILENO     DEP_ID
+---------- ------------ ---------- ---------- ----------
+        11 runa              34000  173523525         60
+        21 tiani             34300  173544425         50
+        31 ruti              34300  173543555         70
+        36 roni              35460 1567743555         80
+        41 rrita             35460  156774445         80
+        46 rtyua             35460  167774445         80
+        51 russia            35460  145454445         60
+
+7 rows selected.
+
+SQL> create view empvw as select e_id, e_name, d_name from epm where d_id = 80;
+create view empvw as select e_id, e_name, d_name from epm where d_id = 80
+                                                      *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> create view empvw as select e_id, e_name, d_name from epm where dep_id = 80;
+create view empvw as select e_id, e_name, d_name from epm where dep_id = 80
+                                                      *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> create view empvw as select e_id, e_name from epm where dep_id = 80;
+create view empvw as select e_id, e_name from epm where dep_id = 80
+                                              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> create view empvw as select e_id, e_name, d_name from emp where dep_id = 80;
+create view empvw as select e_id, e_name, d_name from emp where dep_id = 80
+                                          *
+ERROR at line 1:
+ORA-00904: "D_NAME": invalid identifier
+
+
+SQL> create view empvw as select e_id, e_name from emp where dep_id = 80;
+
+View created.
+
+SQL> select * from empvw;
+
+      E_ID E_NAME
+---------- ------------
+        36 roni
+        41 rrita
+        46 rtyua
+
+SQL> select table_name from user_tables;
+
+TABLE_NAME
+------------------------------
+LOGMNR_PARAMETER$
+LOGMNR_SESSION$
+MVIEW$_ADV_WORKLOAD
+MVIEW$_ADV_BASETABLE
+MVIEW$_ADV_SQLDEPEND
+MVIEW$_ADV_PRETTY
+MVIEW$_ADV_TEMP
+MVIEW$_ADV_FILTER
+MVIEW$_ADV_LOG
+MVIEW$_ADV_FILTERINSTANCE
+MVIEW$_ADV_LEVEL
+
+TABLE_NAME
+------------------------------
+MVIEW$_ADV_ROLLUP
+MVIEW$_ADV_AJG
+MVIEW$_ADV_FJG
+MVIEW$_ADV_GC
+MVIEW$_ADV_CLIQUE
+MVIEW$_ADV_ELIGIBLE
+MVIEW$_ADV_OUTPUT
+MVIEW$_ADV_EXCEPTIONS
+MVIEW$_ADV_PARAMETERS
+MVIEW$_ADV_INFO
+MVIEW$_ADV_JOURNAL
+
+TABLE_NAME
+------------------------------
+MVIEW$_ADV_PLAN
+AQ$_QUEUE_TABLES
+AQ$_QUEUES
+AQ$_SCHEDULES
+AQ$_INTERNET_AGENTS
+AQ$_INTERNET_AGENT_PRIVS
+DEF$_ERROR
+DEF$_DESTINATION
+DEF$_CALLDEST
+DEF$_DEFAULTDEST
+DEF$_LOB
+
+TABLE_NAME
+------------------------------
+DEF$_PROPAGATOR
+DEF$_ORIGIN
+DEF$_PUSHED_TRANSACTIONS
+REPCAT$_REPCAT
+REPCAT$_FLAVORS
+REPCAT$_REPSCHEMA
+REPCAT$_SNAPGROUP
+REPCAT$_REPOBJECT
+REPCAT$_REPCOLUMN
+REPCAT$_KEY_COLUMNS
+REPCAT$_GENERATED
+
+TABLE_NAME
+------------------------------
+REPCAT$_REPPROP
+REPCAT$_REPCATLOG
+REPCAT$_DDL
+REPCAT$_REPGROUP_PRIVS
+REPCAT$_PRIORITY_GROUP
+REPCAT$_PRIORITY
+REPCAT$_COLUMN_GROUP
+REPCAT$_GROUPED_COLUMN
+REPCAT$_CONFLICT
+REPCAT$_RESOLUTION_METHOD
+REPCAT$_RESOLUTION
+
+TABLE_NAME
+------------------------------
+REPCAT$_RESOLUTION_STATISTICS
+REPCAT$_RESOL_STATS_CONTROL
+REPCAT$_PARAMETER_COLUMN
+REPCAT$_AUDIT_ATTRIBUTE
+REPCAT$_AUDIT_COLUMN
+REPCAT$_FLAVOR_OBJECTS
+REPCAT$_TEMPLATE_STATUS
+REPCAT$_TEMPLATE_TYPES
+REPCAT$_REFRESH_TEMPLATES
+REPCAT$_USER_AUTHORIZATIONS
+REPCAT$_OBJECT_TYPES
+
+TABLE_NAME
+------------------------------
+REPCAT$_TEMPLATE_REFGROUPS
+REPCAT$_TEMPLATE_OBJECTS
+REPCAT$_TEMPLATE_PARMS
+REPCAT$_OBJECT_PARMS
+REPCAT$_USER_PARM_VALUES
+REPCAT$_TEMPLATE_SITES
+REPCAT$_SITE_OBJECTS
+REPCAT$_RUNTIME_PARMS
+REPCAT$_TEMPLATE_TARGETS
+REPCAT$_EXCEPTIONS
+REPCAT$_INSTANTIATION_DDL
+
+TABLE_NAME
+------------------------------
+REPCAT$_EXTENSION
+REPCAT$_SITES_NEW
+LOGSTDBY$PARAMETERS
+LOGSTDBY$EVENTS
+LOGSTDBY$APPLY_MILESTONE
+LOGSTDBY$SCN
+LOGSTDBY$FLASHBACK_SCN
+LOGSTDBY$PLSQL
+LOGSTDBY$SKIP_TRANSACTION
+LOGSTDBY$SKIP
+LOGSTDBY$SKIP_SUPPORT
+
+TABLE_NAME
+------------------------------
+LOGSTDBY$HISTORY
+LOGSTDBY$EDS_TABLES
+DEF$_AQCALL
+DEF$_AQERROR
+SQLPLUS_PRODUCT_PROFILE
+HELP
+TEST_100
+TEST_110
+EMPLOYEES
+DEPARTMENTS
+EMPLOYEE
+
+TABLE_NAME
+------------------------------
+TEACHER
+STUDENT
+COUNTRYS
+DIVISION
+DISTRICT
+THANA
+UNIONS
+VILLAGE
+DEPARTMENT
+EMPLOYE
+DEP
+
+TABLE_NAME
+------------------------------
+EMP
+LOGMNR_GT_TAB_INCLUDE$
+LOGMNR_GT_USER_INCLUDE$
+LOGMNR_GT_XID_INCLUDE$
+LOGMNRT_MDDL$
+OL$
+OL$HINTS
+OL$NODES
+LOGMNR_DICTSTATE$
+LOGMNRC_GTLO
+LOGMNRC_GTCS
+
+TABLE_NAME
+------------------------------
+LOGMNRC_GSII
+LOGMNRC_GSBA
+LOGMNR_SEED$
+LOGMNR_DICTIONARY$
+LOGMNR_OBJ$
+LOGMNR_TAB$
+LOGMNR_COL$
+LOGMNR_ATTRCOL$
+LOGMNR_TS$
+LOGMNR_IND$
+LOGMNR_USER$
+
+TABLE_NAME
+------------------------------
+LOGMNR_TABPART$
+LOGMNR_TABSUBPART$
+LOGMNR_TABCOMPART$
+LOGMNR_TYPE$
+LOGMNR_COLTYPE$
+LOGMNR_ATTRIBUTE$
+LOGMNR_LOB$
+LOGMNR_CDEF$
+LOGMNR_CCOL$
+LOGMNR_ICOL$
+LOGMNR_LOBFRAG$
+
+TABLE_NAME
+------------------------------
+LOGMNR_INDPART$
+LOGMNR_INDSUBPART$
+LOGMNR_INDCOMPART$
+LOGMNR_LOGMNR_BUILDLOG
+LOGMNR_NTAB$
+LOGMNR_OPQTYPE$
+LOGMNR_SUBCOLTYPE$
+LOGMNR_KOPM$
+LOGMNR_PROPS$
+LOGMNR_ENC$
+LOGMNR_REFCON$
+
+TABLE_NAME
+------------------------------
+LOGMNR_PARTOBJ$
+LOGMNRP_CTAS_PART_MAP
+LOGSTDBY$APPLY_PROGRESS
+LOGMNR_INTEGRATED_SPILL$
+LOGMNR_PROCESSED_LOG$
+LOGMNR_UID$
+LOGMNRC_DBNAME_UID_MAP
+LOGMNR_LOG$
+LOGMNR_ERROR$
+LOGMNR_RESTART_CKPT$
+LOGMNR_GLOBAL$
+
+TABLE_NAME
+------------------------------
+LOGMNR_SESSION_EVOLVE$
+LOGMNR_FILTER$
+LOGMNR_AGE_SPILL$
+LOGMNR_SPILL$
+LOGMNR_RESTART_CKPT_TXINFO$
+LOGMNR_SESSION_ACTIONS$
+
+171 rows selected.
+
+SQL>
