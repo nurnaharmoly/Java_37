@@ -1,0 +1,217 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Mon Jul 30 19:15:54 2018
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect
+Enter user-name: nur
+Enter password:
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> connect user nur identified by nur
+SP2-0306: Invalid option.
+Usage: CONN[ECT] [{logon|/|proxy} [AS {SYSDBA|SYSOPER|SYSASM}] [edition=value]]
+where <logon> ::= <username>[/<password>][@<connect_identifier>]
+      <proxy> ::= <proxyuser>[<username>][/<password>][@<connect_identifier>]
+
+SQL> create user nur identified by nur;
+
+User created.
+
+SQL> grant dba to nur;
+
+Grant succeeded.
+
+SQL> create table teacher(t_id number(2) primary key, t_name varchar2(18) not null, salary number(7,2) check(salary> 50000), mobile number(11) unique, joining date date default sysdate);
+create table teacher(t_id number(2) primary key, t_name varchar2(18) not null, salary number(7,2) check(salary> 50000), mobile number(11) unique, joining date date default sysdate)
+                                                                                                                                                               *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+SQL> create table teacher(t_id number(2) primary key, t_name varchar2(18) not null, salary number(7,2) check(salary> 50000), mobile number(11) unique, joining _date date default sysdate);
+create table teacher(t_id number(2) primary key, t_name varchar2(18) not null, salary number(7,2) check(salary> 50000), mobile number(11) unique, joining _date date default sysdate)
+                                                                                                                                                          *
+ERROR at line 1:
+ORA-00911: invalid character
+
+
+SQL> create table teacher(t_id number(2) primary key, t_name varchar2(18) not null, salary number(7,2) check(salary> 50000), mobile number(11) unique, joining_date date default sysdate);
+
+Table created.
+
+SQL> describe teacher;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ T_ID                                      NOT NULL NUMBER(2)
+ T_NAME                                    NOT NULL VARCHAR2(18)
+ SALARY                                             NUMBER(7,2)
+ MOBILE                                             NUMBER(11)
+ JOINING_DATE                                       DATE
+
+SQL> create table students(s_id number(2) primary key, s_name varchar2(20) not null, edu_qty varchar2(6) check(edu_qty > hsc), tea_id number(2), constraint stu_tec_fk foreign key (tec_id) references teacher(t_id));
+create table students(s_id number(2) primary key, s_name varchar2(20) not null, edu_qty varchar2(6) check(edu_qty > hsc), tea_id number(2), constraint stu_tec_fk foreign key (tec_id) references teacher(t_id))
+                                                                                                                        *
+ERROR at line 1:
+ORA-02438: Column check constraint cannot reference other columns
+
+SQL> create table students(s_id number(2) primary key, s_name varchar2(20) not null, edu_qty varchar2(6) , tea_id number(2), constraint stu_tec_fk foreign key (tec_id) references teacher(t_id));
+create table students(s_id number(2) primary key, s_name varchar2(20) not null, edu_qty varchar2(6) , tea_id number(2), constraint stu_tec_fk foreign key (tec_id) references teacher(t_id))
+                                                                                                                                                           *
+ERROR at line 1:
+ORA-00904: "TEC_ID": invalid identifier
+
+
+SQL> create table students(s_id number(2) primary key, s_name varchar2(20) not null, edu_qty varchar2(6) , tea_id number(2), constraint stu_tec_fk foreign key (tea_id) references teacher(t_id));
+
+Table created.
+
+SQL> insert into teacher(t_id, t_name, salary, mobile, joining_date) values(1, 'sohel', 80000, 0179282822, '1-jan-2013');
+
+1 row created.
+
+SQL> insert into teacher(t_id, t_name, salary, mobile, joining_date) values(2, 'moly', 80000, 0179445552, '1-jan-2013');
+
+1 row created.
+
+SQL> insert into teacher(t_id, t_name, salary, mobile, joining_date) values(3, 'tiru', 45000, 0155555552, '1-jan-2014');
+insert into teacher(t_id, t_name, salary, mobile, joining_date) values(3, 'tiru', 45000, 0155555552, '1-jan-2014')
+*
+ERROR at line 1:
+ORA-02290: check constraint (SYSTEM.SYS_C007077) violated
+
+SQL> insert into teacher(t_id, t_name, salary, mobile, joining_date) values(3, 'tiru', 60000, 0155778872, '1-jun-2014');
+
+1 row created.
+
+SQL> insert into teacher(t_id, t_name, salary, mobile, ) values(4, 'gitu', 60000, 0155778872);
+insert into teacher(t_id, t_name, salary, mobile, ) values(4, 'gitu', 60000, 0155778872)
+                                                  *
+ERROR at line 1:
+ORA-01747: invalid user.table.column, table.column, or column specification
+
+
+SQL> insert into teacher(t_id, t_name, salary, mobile ) values(4, 'gitu', 60000, 0155778872);
+insert into teacher(t_id, t_name, salary, mobile ) values(4, 'gitu', 60000, 0155778872)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C007079) violated
+
+
+SQL> insert into teacher(t_id, t_name, salary, mobile ) values(4, 'gitu', 60000, 01787655472);
+
+1 row created.
+
+SQL> insert into teacher(t_id, t_name, salary, mobile ) values(5, 'tire', 60000, 0175675542);
+
+1 row created.
+
+SQL> select * from teacher;
+
+      T_ID T_NAME                 SALARY     MOBILE JOINING_D
+---------- ------------------ ---------- ---------- ---------
+         1 sohel                   80000  179282822 01-JAN-13
+         2 moly                    80000  179445552 01-JAN-13
+         3 tiru                    60000  155778872 01-JUN-14
+         4 gitu                    60000 1787655472 30-JUL-18
+         5 tire                    60000  175675542 30-JUL-18
+
+SQL> describe students;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                      NOT NULL NUMBER(2)
+ S_NAME                                    NOT NULL VARCHAR2(20)
+ EDU_QTY                                            VARCHAR2(6)
+ TEA_ID                                             NUMBER(2)
+
+SQL> inser into students(s_id, s_name, edu_qty, tea_id) values(1, 'kona' 'hsc' 3);
+SP2-0734: unknown command beginning "inser into..." - rest of line ignored.
+
+SQL> insert into students(s_id, s_name, edu_qty, tea_id) values(1, 'kona', 'mba', 4);
+
+1 row created.
+
+SQL> insert into students(s_id, s_name, edu_qty, tea_id) values(2, 'toma', 'mba', 4);
+
+1 row created.
+
+SQL> insert into students(s_id, s_name, edu_qty, tea_id) values(3, 'juma', 'mba', 4);
+
+1 row created.
+
+SQL> insert into students(s_id, s_name, edu_qty, tea_id) values(4, 'lila', 'mbs', 1);
+
+1 row created.
+
+SQL> insert into students(s_id, s_name, edu_qty, tea_id) values(5, 'hobi', 'mms', 2);
+
+1 row created.
+
+SQL> insert into students(s_id, s_name, edu_qty, tea_id) values(6, 'koli', 'mms', 3);
+
+1 row created.
+
+SQL> select * from students;
+
+      S_ID S_NAME               EDU_QT     TEA_ID
+---------- -------------------- ------ ----------
+         1 kona                 mba             4
+         2 toma                 mba             4
+         3 juma                 mba             4
+         4 lila                 mbs             1
+         5 hobi                 mms             2
+         6 koli                 mms             3
+
+6 rows selected.
+
+SQL> select s.s_id, s.s_name, t.t_id, t_name
+  2  from students s join teacher t
+  3  using (t_name);
+using (t_name)
+       *
+ERROR at line 3:
+ORA-00904: "S"."T_NAME": invalid identifier
+
+
+SQL> select s.s_id, s.s_name, t.t_id, t_name
+  2  from students s join teacher t
+  3  using (t_name);
+using (t_name)
+       *
+ERROR at line 3:
+ORA-00904: "S"."T_NAME": invalid identifier
+
+
+SQL> create view stuvw as select s_id, s_name, from students where tea_id=4;
+create view stuvw as select s_id, s_name, from students where tea_id=4
+                                          *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL>
+SQL> create view stuvw as select s_id, s_name from students where tea_id=4;
+
+View created.
+
+SQL> select viwe stuvw;
+select viwe stuvw
+                *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select * from stuvw;
+
+      S_ID S_NAME
+---------- --------------------
+         1 kona
+         2 toma
+         3 juma
+
+SQL>

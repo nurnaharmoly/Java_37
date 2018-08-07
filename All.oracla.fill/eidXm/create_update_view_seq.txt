@@ -49,23 +49,10 @@ SQL> create sequence dep_seq increment by 10 start with 10 nomaxvalue nominvalue
 
 Sequence created.
 
-SQL> create sequence dep_seq increment by 5 start with 1 nomaxvalue nominvalue nocycle nocache;
-create sequence dep_seq increment by 5 start with 1 nomaxvalue nominvalue nocycle nocache
-                *
-ERROR at line 1:
-ORA-00955: name is already used by an existing object
-
 
 SQL> create sequence emp_seq increment by 5 start with 1 nomaxvalue nominvalue nocycle nocache;
 
 Sequence created.
-
-SQL> select sequence_name from user_sequence;
-select sequence_name from user_sequence
-                          *
-ERROR at line 1:
-ORA-00942: table or view does not exist
-
 
 SQL> select sequence_name from user_sequences;
 
@@ -142,13 +129,6 @@ SQL> create synonym view_syn for depvw;
 
 Synonym created.
 
-SQL> select * from view_sys;
-select * from view_sys
-              *
-ERROR at line 1:
-ORA-00942: table or view does not exist
-
-
 SQL> select * from view_syn;
 
     DEP_ID DEP_NAME
@@ -156,27 +136,6 @@ SQL> select * from view_syn;
         10 Admin
         20 Software
         30 Marketing
-
-SQL> select * from dep_syn;
-select * from dep_syn
-              *
-ERROR at line 1:
-ORA-00980: synonym translation is no longer valid
-
-
-SQL> select * from dep_syn;
-select * from dep_syn
-              *
-ERROR at line 1:
-ORA-00980: synonym translation is no longer valid
-
-
-SQL> select * from department;
-select * from department
-              *
-ERROR at line 1:
-ORA-00942: table or view does not exist
-
 
 SQL> select * from departments;
 
@@ -186,8 +145,6 @@ SQL> select * from departments;
         20 Software
         30 Marketing
 
-SQL> dorp synonym dep_syn;
-SP2-0734: unknown command beginning "dorp synon..." - rest of line ignored.
 SQL> drop synonym dep_syn;
 
 Synonym dropped.
@@ -264,33 +221,6 @@ SQL> select * from employees;
         16 boni          154647637      15000 02-OCT-14 rassia                10
         21 joni         3443343443      15500 02-OCT-14 BD                    30
 
-SQL> create view empvw from emlpoyees;
-create view empvw from emlpoyees
-                  *
-ERROR at line 1:
-ORA-00905: missing keyword
-
-
-SQL> create view empvw as from emlpoyees;
-create view empvw as from emlpoyees
-                     *
-ERROR at line 1:
-ORA-00928: missing SELECT keyword
-
-
-SQL> create view depvw as select from departments;
-create view depvw as select from departments
-                            *
-ERROR at line 1:
-ORA-00936: missing expression
-
-
-SQL> create view empvw as select emp_id, emp_name, salary, country, moblie from employees;
-create view empvw as select emp_id, emp_name, salary, country, moblie from employees
-                                                               *
-ERROR at line 1:
-ORA-00904: "MOBLIE": invalid identifier
-
 
 SQL> create view empvw as select emp_id, emp_name, salary, country, mobile from employees;
 
@@ -311,13 +241,6 @@ SQL> create synonym eviwe_syn for employees;
 
 Synonym created.
 
-SQL> select * from epm_syn;
-select * from epm_syn
-              *
-ERROR at line 1:
-ORA-00942: table or view does not exist
-
-
 SQL> select * from emp_syn;
 
     EMP_ID EMP_NAME         MOBILE     SALARY JOINING_D COUNTRY           DEP_ID
@@ -328,23 +251,9 @@ SQL> select * from emp_syn;
         16 boni          154647637      15000 02-OCT-14 rassia                10
         21 joni         3443343443      15500 02-OCT-14 BD                    30
 
-SQL> create synonym eviwe_syn for empvw;
-create synonym eviwe_syn for empvw
-               *
-ERROR at line 1:
-ORA-00955: name is already used by an existing object
-
-
 SQL> create synonym epviwe_syn for empvw;
 
 Synonym created.
-
-SQL> select * from epviwe;
-select * from epviwe
-              *
-ERROR at line 1:
-ORA-00942: table or view does not exist
-
 
 SQL> select * from epviwe_syn;
 
@@ -385,13 +294,6 @@ SQL> select * from departments;
 SQL> alter table employees add email varchar2(18) unique;
 
 Table altered.
-
-SQL> select * from emlp;
-select * from emlp
-              *
-ERROR at line 1:
-ORA-00942: table or view does not exist
-
 
 SQL> select * from employees;
 

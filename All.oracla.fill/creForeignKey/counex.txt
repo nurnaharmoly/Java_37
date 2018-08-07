@@ -20,23 +20,9 @@ SQL> create table countrys(c_id number(2) primary key, c_name varchar2(12));
 
 Table created.
 
-SQL> grant to num;
-grant to num
-      *
-ERROR at line 1:
-ORA-00990: missing or invalid privilege
-
-
 SQL> grant dba to num;
 
 Grant succeeded.
-
-SQL> create table division(div_id number(2) primary key, div_name varchar2(12) cou_id number(2), constraint cou_div_fk foreign key (cou_id) references countrys (c_id));
-create table division(div_id number(2) primary key, div_name varchar2(12) cou_id number(2), constraint cou_div_fk foreign key (cou_id) references countrys (c_id))
-                                                                          *
-ERROR at line 1:
-ORA-00907: missing right parenthesis
-
 
 SQL> create table division(div_id number(2) primary key, div_name varchar2(12), cou_id number(2), constraint cou_div_fk foreign key (cou_id) references countrys (c_id));
 
@@ -45,20 +31,6 @@ Table created.
 SQL> create table district(dis_id number(2) primary key, dis_name varchar2(12), cou_id number(2), constraint cou_dis_fk foreign key (cou_id) references countrys (c_id), divi_id number(2), constraint div_dis_fk foreign key (divi_id) references division(div_id) );
 
 Table created.
-
-SQL> create table thana(t_id number(2) primary key, t_name varchar2(12), cou_id number(2), constraint cou_tha_fk foreign key (cou_id) references countrys (c_id), divi_id number(2), constraint div_tha_fk foreign key (divi_id) references division(div_id) constraint dis_tha_fk foreign key (dist_id) references district (dis_id));
-create table thana(t_id number(2) primary key, t_name varchar2(12), cou_id number(2), constraint cou_tha_fk foreign key (cou_id) references countrys (c_id), divi_id number(2), constraint div_tha_fk foreign key (divi_id) references division(div_id) constraint dis_tha_fk foreign key (dist_id) references district (dis_id))
-                                                                                                                                                                                                                                                        *
-ERROR at line 1:
-ORA-00907: missing right parenthesis
-
-
-SQL> create table thana(t_id number(2) primary key, t_name varchar2(12), cou_id number(2), constraint cou_tha_fk foreign key (cou_id) references countrys (c_id), divi_id number(2), constraint div_tha_fk foreign key (divi_id) references division(div_id), constraint dis_tha_fk foreign key (dist_id) references district (dis_id));
-create table thana(t_id number(2) primary key, t_name varchar2(12), cou_id number(2), constraint cou_tha_fk foreign key (cou_id) references countrys (c_id), divi_id number(2), constraint div_tha_fk foreign key (divi_id) references division(div_id), constraint dis_tha_fk foreign key (dist_id) references district (dis_id))
-                                                                                                                                                                                                                                                                                            *
-ERROR at line 1:
-ORA-00904: "DIST_ID": invalid identifier
-
 
 SQL> create table thana(t_id number(2) primary key, t_name varchar2(12), cou_id number(2), constraint cou_tha_fk foreign key (cou_id) references countrys (c_id), divi_id number(2), constraint div_tha_fk foreign key (divi_id) references division(div_id), dist_id number(2), constraint dis_tha_fk foreign key (dist_id) references district (dis_id));
 

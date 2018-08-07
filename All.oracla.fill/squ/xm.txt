@@ -1,11 +1,5 @@
 SQL> connect sys as sysdba;
 Connected.
-SQL> create eid2 identified by eid;
-create eid2 identified by eid
-       *
-ERROR at line 1:
-ORA-00901: invalid CREATE command 
-
 
 SQL> create user eid2 identified by eid;
 
@@ -33,13 +27,6 @@ Table dropped.
 SQL> create table employees(emp_id number(2) primary key, emp_name varchar2(8) not null, mobile number(11) unique,salary number(5,2) check(salary>10000), joining_date date default sysdate, country varchar2(8) default 'BD', dep_id number(2), constraint emp_dep_fk foreign key (dep_id) references departments(dep_id));
 
 Table created.
-
-SQL> create sequence dep_seq increment by 10 started with 10 nomaxvalue nominvalue nocycle nocache;
-create sequence dep_seq increment by 10 started with 10 nomaxvalue nominvalue nocycle nocache
-                                        *
-ERROR at line 1:
-ORA-00933: SQL command not properly ended 
-
 
 SQL> create sequence dep_seq increment by 10 start with 10 nomaxvalue nominvalue nocycle nocache;
 
@@ -126,20 +113,6 @@ SQL> create view dep_vw as select dep_id, department_name from departments;
 
 View created.
 
-SQL> select wiew_name from user_viewes;
-select wiew_name from user_viewes
-                      *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-SQL> select wiew_name from user_views;
-select wiew_name from user_views
-       *
-ERROR at line 1:
-ORA-00904: "WIEW_NAME": invalid identifier 
-
-
 SQL> select view_name from user_views;
 
 VIEW_NAME                                                                       
@@ -175,13 +148,6 @@ SQL> create synonym depvw_sym for dep_vw;
 
 Synonym created.
 
-SQL> select * frorm dep_sym;
-select * frorm dep_sym
-         *
-ERROR at line 1:
-ORA-00923: FROM keyword not found where expected 
-
-
 SQL> select * from dep_sym;
 
     DEP_ID DEPARTME                                                             
@@ -196,20 +162,7 @@ SQL> select * from depvw_sym;
 ---------- --------                                                             
         10 admin                                                                
         20 software                                                             
-        40 markting                                                             
-
-SQL> insert into employees(emp_id, emp_name, mobile, salary, joining_date, country, dep_id) values(emp_seq.nextval, 'nila' 0177323222, 12000, '1-jan-12', 'india', 20);
-insert into employees(emp_id, emp_name, mobile, salary, joining_date, country, dep_id) values(emp_seq.nextval, 'nila' 0177323222, 12000, '1-jan-12', 'india', 20)
-                                                                                                                      *
-ERROR at line 1:
-ORA-00917: missing comma 
-
-
-SQL> insert into employees(emp_id, emp_name, mobile, salary, joining_date, country, dep_id) values(emp_seq.nextval, 'nila', 0177323222, 12000, '1-jan-12', 'india', 20);
-insert into employees(emp_id, emp_name, mobile, salary, joining_date, country, dep_id) values(emp_seq.nextval, 'nila', 0177323222, 12000, '1-jan-12', 'india', 20)
-                                                                                                                                   *
-ERROR at line 1:
-ORA-01438: value larger than specified precision allowed for this column 
+        40 markting                                                         
 
 
 SQL> spool off;
