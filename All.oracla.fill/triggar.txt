@@ -1,0 +1,42 @@
+create table employees as select * from hr.employees;
+ 
+create table employees_backup as select * from employees;
+
+
+create or replace trigger emp_after_insert after insert on employees
+for each row
+
+declare
+begin
+
+  insert into employees_backup values(:new.EMPLOYEE_ID,	:new.FIRST_NAME, :new.LAST_NAME, :new.EMAIL, :new.PHONE_NUMBER, :new.HIRE_DATE,	:new.JOB_ID, :new.SALARY, :new.COMMISSION_PCT,	:new.MANAGER_ID, :new.DEPARTMENT_ID);
+
+dbms_output.put_line('Record successfully insert into employees_backup table');
+end;
+
+
+select * from employees_backup;
+
+
+insert into employees select * from hr.employees where employee_id = 110;
+
+
+select * from employees_backup;
+
+
+select trigger_name from user_triggers;
+
+
+create or replace trigger emp_after_update after update on employees
+for each row 
+declare
+begin
+update employees_backup
+set last_name= :new.last_name
+where employee_id= :old.employee_id;
+dbms_output.put_line('Record successfully insert into employees_backup table');
+end;
+
+update employees set last_name = 'Shekh Hasina' where employee_id = 120;
+
+select * from employees_backup where employee_id=120;
