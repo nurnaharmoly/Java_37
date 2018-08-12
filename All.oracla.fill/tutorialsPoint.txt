@@ -1,0 +1,152 @@
+1. declare
+--variable declaration
+message varchar2(20):='Hello, World!';
+begin
+/*
+*pl/sql executable statement(s)
+*/
+dbms_output.put_line(message);
+end;
+/
+
+
+2. declare 
+a integer := 10;
+b integer := 20;
+c integer;
+f real;
+begin
+c:= a+b;
+dbms_output.put_line('Value of c:' || c);
+f := 70.0/3.0;
+dbms_output.put_line('Value of f:' || f);
+end;
+/
+
+
+
+3.  declare 
+message varchar2(50) := 'This is Moly';
+x integer := 70;
+y integer := 60;
+
+begin
+dbms_output.put_line(message);
+dbms_output.put_line('This is the new programing language');
+
+dbms_output.put_line(x+y);
+dbms_output.put_line(x-y);
+dbms_output.put_line(x*y);
+dbms_output.put_line(x/y);
+end;
+
+4. begin
+dbms_output.put_line('Outer variable num1:' || num1);
+dbms_output.put_line('Outer variable num2:' || num2);
+  declare
+
+  num1 number := 195;
+  num2 number := 185;
+
+  begin
+  dbms_output.put_line('Inner variable num1:' || num1);
+  dbms_output.put_line('Inner variable num2:' || num2);
+
+  end;
+end;
+
+5.  create table customers(id int not null, name varchar(20) not null, age int not null, address char(25), salary decimal(18,2), primary key(ID));
+
+declare
+ c_id customers.id%type :=1;
+ c_name customers.name%type;
+ c_addr customers.address%type;
+ c_sal customers.salary%type;
+
+begin
+select name, address, salary into c_name, c_addr, c_sal from customers where id = c_id;
+dbms_output.put_line('Customer ' ||c_name || ' from ' || c_addr || ' earns ' || c_sal);
+
+declare
+ d_id customers.id%type :=2;
+ d_name customers.name%type;
+ d_addr customers.address%type;
+ d_sal customers.salary%type;
+
+begin
+select name, address, salary into d_name, d_addr, d_sal from customers where id = d_id;
+dbms_output.put_line('Customer ' ||d_name || ' from ' || d_addr || ' earns ' || d_sal);
+
+declare
+ e_id customers.id%type :=3;
+ e_name customers.name%type;
+ e_addr customers.address%type;
+ e_sal customers.salary%type;
+
+begin
+select name, address, salary into e_name, e_addr, e_sal from customers where id = e_id;
+dbms_output.put_line('Customer ' ||e_name || ' from ' || e_addr || ' earns ' || e_sal);
+
+end;
+
+end;
+
+end;
+insert into customers (id, name, age, address, salary) values(3, 'Boni', 30, 'Mirpur', 5000.00);
+
+
+6.  declare 
+ subtype name is char(20);
+ subtype message is varchar2(100);
+ salutation name;
+ greetings message;
+
+begin 
+ salutation := 'reder';
+ greetings := 'Welcome to the world of pl/sql';
+ dbms_output.put_line('Hello ' || salutation || greetings);
+end;
+
+ 7.  declare
+a number (2) :=21;
+b number (2) :=10;
+ begin
+if(a = b) then
+dbms_output.put_line('line 1 - a is equal to b');
+else
+dbms_output.put_line('line 1 - a is not equal to b');
+end if;
+
+if(a < b) then
+dbms_output.put_line('line 2 - a is less then b');
+else
+dbms_output.put_line('line 2 - a is not less then b');
+end if;
+
+if(a > b) then
+dbms_output.put_line('line 3 - a is greater then b');
+else
+dbms_output.put_line('line 3 - a is not greater then b');
+end if;
+
+a := 5;
+b := 20;
+
+if(a <= b) then
+dbms_output.put_line('line 4 - a either equal or less then b');
+end if;
+
+if(b >= a) then
+dbms_output.put_line('line 5 - b is either equal or greater then a');
+end if;
+
+if(a <> b) then
+dbms_output.put_line('line 6 - a is not equal to b');
+else
+dbms_output.put_line('line 6 - a is equal to b');
+end if;
+end;
+
+
+
+
