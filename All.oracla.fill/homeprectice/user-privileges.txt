@@ -1,0 +1,342 @@
+SQL> connect sys as sysdba;
+Connected.
+SQL> create user abc identified by abc;
+
+User created.
+
+SQL> connect;
+Enter user-name: abc
+ERROR:
+ORA-01017: invalid username/password; logon denied 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> connect;
+Enter user-name: abc
+ERROR:
+ORA-01045: user ABC lacks CREATE SESSION privilege; logon denied 
+
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> grant create session to abc;
+
+Grant succeeded.
+
+SQL> connect;
+Enter user-name: abc
+Connected.
+SQL> create table test(id number(2), name varchar2(12));
+create table test(id number(2), name varchar2(12))
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> grant create table to abc;
+
+Grant succeeded.
+
+SQL> connect;
+Enter user-name: abc
+Connected.
+SQL> create table test(id number(2), name varchar2(12));
+create table test(id number(2), name varchar2(12))
+*
+ERROR at line 1:
+ORA-01950: no privileges on tablespace 'SYSTEM' 
+
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> alter user abc quota 500m on system;
+
+User altered.
+
+SQL> connect;
+Enter user-name: abc
+Connected.
+SQL> create table test(id number(2), name varchar2(12));
+
+Table created.
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> create user abc1 identified by abc1;
+
+User created.
+
+SQL> create role manager;
+create role manager
+            *
+ERROR at line 1:
+ORA-01921: role name 'MANAGER' conflicts with another user or role name 
+
+
+SQL> create role abc;
+create role abc
+            *
+ERROR at line 1:
+ORA-01921: role name 'ABC' conflicts with another user or role name 
+
+
+SQL> create role menu;
+
+Role created.
+
+SQL> grant menu to abc1;
+
+Grant succeeded.
+
+SQL> grant create session, create table, create view to menu;
+
+Grant succeeded.
+
+SQL> alter user abc1 quota 500m on system;
+
+User altered.
+
+SQL> connect;
+Enter user-name: abc1
+Connected.
+SQL> create table test1(id number(2), name varchar2(12));
+
+Table created.
+
+SQL> insert into test1 values(1, 'piya');
+
+1 row created.
+
+SQL> insert into test1 values(1, 'hiya');
+
+1 row created.
+
+SQL> insert into test1 values(1, 'riya');
+
+1 row created.
+
+SQL> select * from test1;
+
+        ID NAME                                                                 
+---------- ------------                                                         
+         1 piya                                                                 
+         1 hiya                                                                 
+         1 riya                                                                 
+
+SQL> create view vw_t1 as select * from test1;
+
+View created.
+
+SQL> select * from vw_t1;
+
+        ID NAME                                                                 
+---------- ------------                                                         
+         1 piya                                                                 
+         1 hiya                                                                 
+         1 riya                                                                 
+
+SQL> connect;
+Enter user-name: abc
+Connected.
+SQL> insert into test values(1, 'roni');
+
+1 row created.
+
+SQL> insert into test values(1, 'boni');
+
+1 row created.
+
+SQL> insert into test values(1, 'koni');
+
+1 row created.
+
+SQL> select * from test;
+
+        ID NAME                                                                 
+---------- ------------                                                         
+         1 roni                                                                 
+         1 boni                                                                 
+         1 koni                                                                 
+
+SQL> revoke create view from menu;
+revoke create view from menu
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> revoke create view from menu;
+
+Revoke succeeded.
+
+SQL> grant select on abc.test to abc2;
+grant select on abc.test to abc2
+                            *
+ERROR at line 1:
+ORA-01917: user or role 'ABC2' does not exist 
+
+
+SQL> grant select on abc.test to abc1;
+
+Grant succeeded.
+
+SQL> connect;
+Enter user-name: abc1
+Connected.
+SQL> create view vw_t as select * from test1;
+create view vw_t as select * from test1
+            *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> select * from abc.test;
+
+        ID NAME                                                                 
+---------- ------------                                                         
+         1 roni                                                                 
+         1 boni                                                                 
+         1 koni                                                                 
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> grant update, delete,alter on abc.test to abc1;
+
+Grant succeeded.
+
+SQL> connect;
+Enter user-name: abc1
+Connected.
+SQL> update abc.test set name ='Moly' where id= 1;
+
+3 rows updated.
+
+SQL> delect from test;
+SP2-0734: unknown command beginning "delect fro..." - rest of line ignored.
+SQL> delete from test;
+delete from test
+            *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> delete from test name;
+delete from test name
+            *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> delete from test where id=1;
+delete from test where id=1
+            *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> delete from abc.test where id=1;
+
+3 rows deleted.
+
+SQL> alter table abc.test add  (id number(1) primary key, name varchar2(8));
+alter table abc.test add  (id number(1) primary key, name varchar2(8))
+                           *
+ERROR at line 1:
+ORA-01430: column being added already exists in table 
+
+
+SQL> alter table abc.test add  (t_id number(1) primary key,t_name varchar2(8));
+alter table abc.test add  (t_id number(1) primary key,t_name varchar2(8))
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> grant alter on abc.test to abc1;
+
+Grant succeeded.
+
+SQL> connect;
+Enter user-name: abc1
+Connected.
+SQL> alter table abc.test add  (t_id number(1) primary key,t_name varchar2(8));
+alter table abc.test add  (t_id number(1) primary key,t_name varchar2(8))
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> alter table abc.test add  (email varchar2(12), mobile number(11));
+
+Table altered.
+
+SQL> alter table abc.test modify  (id number(3) primary key, name varchar2(12) not null);
+alter table abc.test modify  (id number(3) primary key, name varchar2(12) not null)
+                                                        *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> alter table abc.test modify  (test_id number(3) primary key, test_name varchar2(12) not null);
+alter table abc.test modify  (test_id number(3) primary key, test_name varchar2(12) not null)
+                              *
+ERROR at line 1:
+ORA-00904: "TEST_ID": invalid identifier 
+
+
+SQL> select * from user_sys_privs;
+
+no rows selected
+
+SQL> select * from user_tab_privs;
+
+GRANTEE                        OWNER                                            
+------------------------------ ------------------------------                   
+TABLE_NAME                     GRANTOR                                          
+------------------------------ ------------------------------                   
+PRIVILEGE                                GRA HIE                                
+---------------------------------------- --- ---                                
+ABC1                           ABC                                              
+TEST                           ABC                                              
+UPDATE                                   NO  NO                                 
+                                                                                
+ABC1                           ABC                                              
+TEST                           ABC                                              
+DELETE                                   NO  NO                                 
+
+GRANTEE                        OWNER                                            
+------------------------------ ------------------------------                   
+TABLE_NAME                     GRANTOR                                          
+------------------------------ ------------------------------                   
+PRIVILEGE                                GRA HIE                                
+---------------------------------------- --- ---                                
+                                                                                
+ABC1                           ABC                                              
+TEST                           ABC                                              
+ALTER                                    NO  NO                                 
+                                                                                
+ABC1                           ABC                                              
+TEST                           ABC                                              
+
+GRANTEE                        OWNER                                            
+------------------------------ ------------------------------                   
+TABLE_NAME                     GRANTOR                                          
+------------------------------ ------------------------------                   
+PRIVILEGE                                GRA HIE                                
+---------------------------------------- --- ---                                
+SELECT                                   NO  NO                                 
+                                                                                
+
+SQL> select * from user_role_privs;
+
+USERNAME                       GRANTED_ROLE                   ADM DEF OS_       
+------------------------------ ------------------------------ --- --- ---       
+ABC1                           MENU                           NO  YES NO        
+
+SQL> spool off;
