@@ -1,0 +1,226 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Wed Aug 29 09:01:03 2018
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect sys as sysdba;
+Enter password:
+Connected.
+SQL> create user abcd identified by abcd;
+
+User created.
+
+SQL> grant dba to abcd;
+
+Grant succeeded.
+
+SQL> connect;
+Enter user-name: abcd
+Enter password:
+Connected.
+SQL> create table customer(id number(3) primary key, name varchar2(10) not null, mobile number(11) unique, country varchar2(12) defualt 'BD');
+create table customer(id number(3) primary key, name varchar2(10) not null, mobile number(11) unique, country varchar2(12) defualt 'BD')
+                                                                                                                           *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+
+SQL> create table customer(id number(3) primary key, name varchar2(10) not null, mobile number(11) unique, country varchar2(12) default 'BD');
+
+Table created.
+
+SQL> create sequence cus_seq increment by 1 start with 1 nomaxvalue nocycle nocache;
+
+Sequence created.
+
+SQL> create table cus_backup  as select * from customer;
+
+Table created.
+
+SQL> create trigger cus_af_ins after insert on customer for each row
+  2  declare
+  3  begin
+  4  insert into cus_backup values(:new.id, :new.name, :new.mobile, :new.contry);
+  5  dbms_output.put_line('insert successful');
+  6  end;
+  7  /
+
+Warning: Trigger created with compilation errors.
+
+SQL> create trigger cust_af_ins after insert on customer for each row
+  2  declare
+  3  begin
+  4  insert into cus_backup values(:new.id, :new.name, :new.mobile, :new.country);
+  5  dbms_output.put_line('insert successful');
+  6  end;
+  7  /
+
+Trigger created.
+
+SQL> create trigger cus_af_up after update on customer for each row
+  2  declare
+  3  begin
+  4  update cus_backup set name=:new.name, country= :new.country where id = :old.id
+  5  dbms_output.put_line('update successful');
+  6  end;
+  7  /
+
+Warning: Trigger created with compilation errors.
+
+SQL> create trigger cust_af_up after update on customer for each row
+  2  declare
+  3  begin
+  4  update cus_backup set name=:new.name where id = :old.id
+  5  dbms_output.put_line('update successful');
+  6  end;
+  7  /
+
+Warning: Trigger created with compilation errors.
+
+SQL> create or replace trigger cust_af_up after update on customer for each row
+  2  declare
+  3  begin
+  4  update cus_backup set name=:new.name where id = :old.id
+  5  dbms_output.put_line('update successful');
+  6  end;
+  7  /
+
+Warning: Trigger created with compilation errors.
+
+SQL> create or replace trigger cust_aft_up after update on customer for each row
+  2  declare
+  3  begin
+  4  update cus_backup set name=:new.name where id =:old.id;
+  5  dbms_output.put_line('update successful');
+  6  end;
+  7  /
+
+Trigger created.
+
+SQL> create trigger cus_af_del after delete on customer for each row
+  2  declare
+  3  begin
+  4  delete cus_backup where id = :old.id;
+  5  dbms_output.put_line('delect successful');
+  6  end;
+  7  /
+
+Trigger created.
+
+SQL> insert into customer(id, name, mobile, country) values(cus_seq.nextval, 'doly' 12626236, 'sril');
+insert into customer(id, name, mobile, country) values(cus_seq.nextval, 'doly' 12626236, 'sril')
+                                                                               *
+ERROR at line 1:
+ORA-00917: missing comma
+
+
+SQL> insert into customer(id, name, mobile, country) values(cus_seq.nextval, 'doly', 12626236, 'sril');
+insert into customer(id, name, mobile, country) values(cus_seq.nextval, 'doly', 12626236, 'sril')
+                                                       *
+ERROR at line 1:
+ORA-04098: trigger 'ABCD.CUS_AF_INS' is invalid and failed re-validation
+
+
+SQL> drop trigger cus_af_ins;
+
+Trigger dropped.
+
+SQL> insert into customer(id, name, mobile, country) values(cus_seq.nextval, 'doly', 12626236, 'sril');
+
+1 row created.
+
+SQL> insert into customer(id, name, mobile) values(cus_seq.nextval, 'roly', 12626236, );
+insert into customer(id, name, mobile) values(cus_seq.nextval, 'roly', 12626236, )
+                                                                                 *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> insert into customer(id, name, mobile) values(cus_seq.nextval, 'roly', 123652362 );
+
+1 row created.
+
+SQL> insert into customer(id, name, mobile, country) values(cus_seq.nextval, 'poly', 146564365, 'japan');
+
+1 row created.
+
+SQL> insert into customer(id, name, mobile, country) values(cus_seq.nextval, 'poly', 147544365, 'india');
+
+1 row created.
+
+SQL> insert into customer(id, name, mobile, country) values(cus_seq.nextval, 'bony', 14734tt635, 'rassia');
+insert into customer(id, name, mobile, country) values(cus_seq.nextval, 'bony', 14734tt635, 'rassia')
+                                                                                     *
+ERROR at line 1:
+ORA-00917: missing comma
+
+
+SQL> insert into customer(id, name, mobile, country) values(cus_seq.nextval, 'bony', 147342635, 'rassia');
+
+1 row created.
+
+SQL> insert into customer(id, name, mobile, country) values(cus_seq.nextval, 'kony', 134342635, 'hilla');
+
+1 row created.
+
+SQL> select * from customer;
+
+        ID NAME           MOBILE COUNTRY
+---------- ---------- ---------- ------------
+         1 doly         12626236 sril
+         2 roly        123652362 BD
+         3 poly        146564365 japan
+         4 poly        147544365 india
+         5 bony        147342635 rassia
+         6 kony        134342635 hilla
+
+6 rows selected.
+
+SQL> update custom set name = 'shushu' where id= 2;
+update custom set name = 'shushu' where id= 2
+       *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> update customer set name = 'shushu' where id= 2;
+update customer set name = 'shushu' where id= 2
+       *
+ERROR at line 1:
+ORA-04098: trigger 'ABCD.CUS_AF_UP' is invalid and failed re-validation
+
+
+SQL> drop trigger cus_af_up;
+
+Trigger dropped.
+
+SQL> update customer set name = 'shushu' where id= 2;
+update customer set name = 'shushu' where id= 2
+       *
+ERROR at line 1:
+ORA-04098: trigger 'ABCD.CUST_AF_UP' is invalid and failed re-validation
+
+
+SQL> drop trigger cust_af_up;
+
+Trigger dropped.
+
+SQL> update customer set name = 'shushu' where id= 2;
+
+1 row updated.
+
+SQL> delete customer where id =6;
+
+1 row deleted.
+
+SQL> select * from cus_backup;
+
+        ID NAME           MOBILE COUNTRY
+---------- ---------- ---------- ------------
+         1 doly         12626236 sril
+         2 shushu      123652362 BD
+         3 poly        146564365 japan
+         4 poly        147544365 india
+         5 bony        147342635 rassia
+
+SQL>

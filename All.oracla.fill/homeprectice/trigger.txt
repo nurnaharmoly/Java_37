@@ -1,0 +1,451 @@
+SQL> connect;
+Enter user-name: u
+Connected.
+SQL> select table_name from user_tables;
+
+TABLE_NAME                                                                      
+------------------------------                                                  
+DEP                                                                             
+DEP_BACKUP                                                                      
+
+SQL> select * from dep;
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+           10 Administration                        200        1700             
+           20 Marketing                             201        1800             
+           30 Purchasing                            114        1700             
+           40 Human Resources                       203        2400             
+           50 meet                                  121        1500             
+           60 IT                                    103        1400             
+           70 Public Relations                      204        2700             
+           80 Sales                                 145        2500             
+           90 Executive                             100        1700             
+          100 Finance                               108        1700             
+          110 Accounting                            205        1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          120 Treasury                                         1700             
+          130 Corporate Tax                                    1700             
+          140 Control And Credit                               1700             
+          150 Shareholder Services                             1700             
+          160 Benefits                                         1700             
+          170 Manufacturing                                    1700             
+          180 Construction                                     1700             
+          190 Contracting                                      1700             
+          200 Operations                                       1700             
+          210 IT Support                                       1700             
+          220 NOC                                              1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          230 IT Helpdesk                                      1700             
+          240 Government Sales                                 1700             
+          250 Retail Sales                                     1700             
+          260 Recruiting                                       1700             
+          270 Payroll                                          1700             
+          250 account                               333         570             
+           50 meet                                  121        1500             
+
+29 rows selected.
+
+SQL> show autocommit;
+autocommit OFF
+SQL> set autocommit on;
+SQL> show autocommit;
+autocommit IMMEDIATE
+SQL> describe dep_backup;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPARTMENT_ID                                      NUMBER(4)
+ DEPARTMENT_NAME                           NOT NULL VARCHAR2(30)
+ MANAGER_ID                                         NUMBER(6)
+ LOCATION_ID                                        NUMBER(4)
+
+SQL> create trigger d_af_in after insert on dep for each row
+  2  declare
+  3  begin
+  4  insert into dep_backup values(:new.DEPARTMENT_ID, :new.DEPARTMENT_NAME, :new.MANAGER_ID, :new.LOCATION_ID);
+  5  dbms_output.put_line('insert successful');
+  6  end;
+  7  /
+create trigger d_af_in after insert on dep for each row
+               *
+ERROR at line 1:
+ORA-04081: trigger 'D_AF_IN' already exists 
+
+
+SQL> create trigger dep_af_in after insert on dep for each row
+  2  declare
+  3  begin
+  4  insert into dep_backup values(:new.DEPARTMENT_ID, :new.DEPARTMENT_NAME, :new.MANAGER_ID, :new.LOCATION_ID);
+  5  dbms_output.put_line('insert successful');
+  6  end;
+  7  /
+
+Trigger created.
+
+SQL> insert into dep select * from hr.departments where department_id = 290;
+
+0 rows created.
+
+Commit complete.
+SQL> insert into dep select * from hr.departments where department_id = 240;
+
+1 row created.
+
+Commit complete.
+SQL> insert into dep values (290, 'rest', 456,789);
+
+1 row created.
+
+Commit complete.
+SQL> select * from dep;
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+           10 Administration                        200        1700             
+           20 Marketing                             201        1800             
+           30 Purchasing                            114        1700             
+           40 Human Resources                       203        2400             
+           50 meet                                  121        1500             
+           60 IT                                    103        1400             
+           70 Public Relations                      204        2700             
+           80 Sales                                 145        2500             
+           90 Executive                             100        1700             
+          100 Finance                               108        1700             
+          110 Accounting                            205        1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          120 Treasury                                         1700             
+          130 Corporate Tax                                    1700             
+          140 Control And Credit                               1700             
+          150 Shareholder Services                             1700             
+          160 Benefits                                         1700             
+          170 Manufacturing                                    1700             
+          180 Construction                                     1700             
+          190 Contracting                                      1700             
+          200 Operations                                       1700             
+          210 IT Support                                       1700             
+          220 NOC                                              1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          230 IT Helpdesk                                      1700             
+          240 Government Sales                                 1700             
+          250 Retail Sales                                     1700             
+          260 Recruiting                                       1700             
+          270 Payroll                                          1700             
+          250 account                               333         570             
+           50 meet                                  121        1500             
+          240 Government Sales                                 1700             
+          290 rest                                  456         789             
+
+31 rows selected.
+
+SQL> select * from dep_backup;
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+           10 Administration                        200        1700             
+           20 Marketing                             201        1800             
+           30 Purchasing                            114        1700             
+           40 Human Resources                       203        2400             
+           50 Shipping                              121        1500             
+           60 IT                                    103        1400             
+           70 Public Relations                      204        2700             
+           80 Sales                                 145        2500             
+           90 Executive                             100        1700             
+          100 Finance                               108        1700             
+          110 Accounting                            205        1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          120 Treasury                                         1700             
+          130 Corporate Tax                                    1700             
+          140 Control And Credit                               1700             
+          150 Shareholder Services                             1700             
+          160 Benefits                                         1700             
+          170 Manufacturing                                    1700             
+          180 Construction                                     1700             
+          190 Contracting                                      1700             
+          200 Operations                                       1700             
+          210 IT Support                                       1700             
+          220 NOC                                              1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          230 IT Helpdesk                                      1700             
+          240 Government Sales                                 1700             
+          250 Retail Sales                                     1700             
+          260 Recruiting                                       1700             
+          270 Payroll                                          1700             
+          240 Government Sales                                 1700             
+          240 Government Sales                                 1700             
+          290 rest                                  456         789             
+          290 rest                                  456         789             
+          250 account                               333         570             
+           50 Shipping                              121        1500             
+
+33 rows selected.
+
+SQL> create trigger dep_af_up after update on dep for each row
+  2  declare
+  3  begin
+  4  update dep_backup set department_name = :new.department_name where department_id = old.department_id;
+  5  dbms_output.put_line ('update successful');
+  6  end;
+  7  /
+
+Warning: Trigger created with compilation errors.
+
+SQL> create trigger dep_af_up after update on dep for each row
+  2  declare
+  3  begin
+  4  update dep_backup set department_name = :new.department_name where department_id = :old.department_id;
+  5  dbms_output.put_line ('update successful');
+  6  end;
+  7  /
+create trigger dep_af_up after update on dep for each row
+               *
+ERROR at line 1:
+ORA-04081: trigger 'DEP_AF_UP' already exists 
+
+
+SQL> create trigger dept_af_up after update on dep for each row
+  2  declare
+  3  begin
+  4  update dep_backup set department_name = :new.department_name where department_id = :old.department_id;
+  5  dbms_output.put_line ('update successful');
+  6  end;
+  7  /
+
+Trigger created.
+
+SQL> update dep set manager_id = 1000 where department_id = 250;
+update dep set manager_id = 1000 where department_id = 250
+       *
+ERROR at line 1:
+ORA-04098: trigger 'U.DEP_AF_UP' is invalid and failed re-validation 
+
+
+SQL> update dep set department_name = 'Dolanchapa' where department_id = 250;
+update dep set department_name = 'Dolanchapa' where department_id = 250
+       *
+ERROR at line 1:
+ORA-04098: trigger 'U.DEP_AF_UP' is invalid and failed re-validation 
+
+
+SQL> drop trigger dep_af_up;
+
+Trigger dropped.
+
+SQL> update dep set manager_id = 1000 where department_id = 250;
+
+2 rows updated.
+
+Commit complete.
+SQL> update dep set department_name = 'Dolanchapa' where department_id = 70;
+
+1 row updated.
+
+Commit complete.
+SQL> select * from dep;
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+           10 Administration                        200        1700             
+           20 Marketing                             201        1800             
+           30 Purchasing                            114        1700             
+           40 Human Resources                       203        2400             
+           50 meet                                  121        1500             
+           60 IT                                    103        1400             
+           70 Dolanchapa                            204        2700             
+           80 Sales                                 145        2500             
+           90 Executive                             100        1700             
+          100 Finance                               108        1700             
+          110 Accounting                            205        1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          120 Treasury                                         1700             
+          130 Corporate Tax                                    1700             
+          140 Control And Credit                               1700             
+          150 Shareholder Services                             1700             
+          160 Benefits                                         1700             
+          170 Manufacturing                                    1700             
+          180 Construction                                     1700             
+          190 Contracting                                      1700             
+          200 Operations                                       1700             
+          210 IT Support                                       1700             
+          220 NOC                                              1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          230 IT Helpdesk                                      1700             
+          240 Government Sales                                 1700             
+          250 Retail Sales                         1000        1700             
+          260 Recruiting                                       1700             
+          270 Payroll                                          1700             
+          250 account                              1000         570             
+           50 meet                                  121        1500             
+          240 Government Sales                                 1700             
+          290 rest                                  456         789             
+
+31 rows selected.
+
+SQL> select * from dep_backup;
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+           10 Administration                        200        1700             
+           20 Marketing                             201        1800             
+           30 Purchasing                            114        1700             
+           40 Human Resources                       203        2400             
+           50 Shipping                              121        1500             
+           60 IT                                    103        1400             
+           70 Dolanchapa                            204        2700             
+           80 Sales                                 145        2500             
+           90 Executive                             100        1700             
+          100 Finance                               108        1700             
+          110 Accounting                            205        1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          120 Treasury                                         1700             
+          130 Corporate Tax                                    1700             
+          140 Control And Credit                               1700             
+          150 Shareholder Services                             1700             
+          160 Benefits                                         1700             
+          170 Manufacturing                                    1700             
+          180 Construction                                     1700             
+          190 Contracting                                      1700             
+          200 Operations                                       1700             
+          210 IT Support                                       1700             
+          220 NOC                                              1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          230 IT Helpdesk                                      1700             
+          240 Government Sales                                 1700             
+          250 account                                          1700             
+          260 Recruiting                                       1700             
+          270 Payroll                                          1700             
+          240 Government Sales                                 1700             
+          240 Government Sales                                 1700             
+          290 rest                                  456         789             
+          290 rest                                  456         789             
+          250 account                               333         570             
+           50 Shipping                              121        1500             
+
+33 rows selected.
+
+SQL> create trigger d_af_del after delete on dep for each row
+  2  declare
+  3  begin
+  4  delete dep_backup where department_id = :old.department_id;
+  5  dbms_output.put_line('delete successful');
+  6  end;
+  7  /
+
+Trigger created.
+
+SQL> delect dep where department_id = 290;
+SP2-0734: unknown command beginning "delect dep..." - rest of line ignored.
+SQL> delect from dep where department_id = 290;
+SP2-0734: unknown command beginning "delect fro..." - rest of line ignored.
+SQL> delete dep where department_id = 290;
+
+1 row deleted.
+
+Commit complete.
+SQL> select * from dep;
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+           10 Administration                        200        1700             
+           20 Marketing                             201        1800             
+           30 Purchasing                            114        1700             
+           40 Human Resources                       203        2400             
+           50 meet                                  121        1500             
+           60 IT                                    103        1400             
+           70 Dolanchapa                            204        2700             
+           80 Sales                                 145        2500             
+           90 Executive                             100        1700             
+          100 Finance                               108        1700             
+          110 Accounting                            205        1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          120 Treasury                                         1700             
+          130 Corporate Tax                                    1700             
+          140 Control And Credit                               1700             
+          150 Shareholder Services                             1700             
+          160 Benefits                                         1700             
+          170 Manufacturing                                    1700             
+          180 Construction                                     1700             
+          190 Contracting                                      1700             
+          200 Operations                                       1700             
+          210 IT Support                                       1700             
+          220 NOC                                              1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          230 IT Helpdesk                                      1700             
+          240 Government Sales                                 1700             
+          250 Retail Sales                         1000        1700             
+          260 Recruiting                                       1700             
+          270 Payroll                                          1700             
+          250 account                              1000         570             
+           50 meet                                  121        1500             
+          240 Government Sales                                 1700             
+
+30 rows selected.
+
+SQL> select * from dep_backup;
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+           10 Administration                        200        1700             
+           20 Marketing                             201        1800             
+           30 Purchasing                            114        1700             
+           40 Human Resources                       203        2400             
+           50 Shipping                              121        1500             
+           60 IT                                    103        1400             
+           70 Dolanchapa                            204        2700             
+           80 Sales                                 145        2500             
+           90 Executive                             100        1700             
+          100 Finance                               108        1700             
+          110 Accounting                            205        1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          120 Treasury                                         1700             
+          130 Corporate Tax                                    1700             
+          140 Control And Credit                               1700             
+          150 Shareholder Services                             1700             
+          160 Benefits                                         1700             
+          170 Manufacturing                                    1700             
+          180 Construction                                     1700             
+          190 Contracting                                      1700             
+          200 Operations                                       1700             
+          210 IT Support                                       1700             
+          220 NOC                                              1700             
+
+DEPARTMENT_ID DEPARTMENT_NAME                MANAGER_ID LOCATION_ID             
+------------- ------------------------------ ---------- -----------             
+          230 IT Helpdesk                                      1700             
+          240 Government Sales                                 1700             
+          250 account                                          1700             
+          260 Recruiting                                       1700             
+          270 Payroll                                          1700             
+          240 Government Sales                                 1700             
+          240 Government Sales                                 1700             
+          250 account                               333         570             
+           50 Shipping                              121        1500             
+
+31 rows selected.
+
+SQL> spool off;

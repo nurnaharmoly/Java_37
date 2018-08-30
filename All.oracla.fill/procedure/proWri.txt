@@ -1,0 +1,33 @@
+create or replace procedure inseCustomer(
+   p_id in customer.id%type,
+   p_name in customer.name%type,
+   p_mobile in customer.mobile%type,
+   p_country in customer.country%type)
+   is
+   begin
+insert into customer(id, name, mobile, country ) values(p_id, p_name, p_mobile, p_country);
+end;
+/
+
+
+
+create or replace procedure up_cus(
+p_id in customer.id%type,
+p_name in customer.name%type,
+p_mobile in customer.mobile%type,
+p_country in customer.country%type)
+is
+begin
+update customer set name=p_name, mobile=p_mobile, country=p_country where id=p_id;
+end;
+/
+
+
+
+create or replace procedure del_cus(
+p_id in customer.id%type)
+is
+begin
+delete customer where id=p_id;
+end;
+/
