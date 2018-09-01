@@ -10,7 +10,7 @@ package chap2;
  * @author User
  */
 public class VariableEx {
-    public class VariableEx{
+   
  //int x;
  //int y;
  //int z;
@@ -47,4 +47,4 @@ long studentId=1971_3434;
  float f = 2328434;
     
 }
-}
+
