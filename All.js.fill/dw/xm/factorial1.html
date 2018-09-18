@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+</head>
+
+<body>
+<script>
+var n;
+function calculatefactorise(n){
+	if(n == 0){
+	return 1;
+	}else{
+		return n*calculatefactorise(n-1);
+		}
+		}
+	var number = prompt("Enter is Number :","1");
+	alert(calculatefactorise(number));
+	document.writeln("Factories of you ("+number+") " +"is: "+calculatefactorise(number));
+	
+	
+	
+</script>
+</body>
+</html>

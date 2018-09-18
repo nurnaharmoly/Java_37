@@ -1,0 +1,88 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Wed Aug 1 08:47:53 2018
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> create user num identified by num;
+
+User created.
+
+SQL> show autocommit;
+autocommit OFF
+SQL> set autocommit on;
+SQL> show autocommit;
+autocommit IMMEDIATE
+SQL> create table countrys(c_id number(2) primary key, c_name varchar2(12));
+
+Table created.
+
+SQL> grant dba to num;
+
+Grant succeeded.
+
+SQL> create table division(div_id number(2) primary key, div_name varchar2(12), cou_id number(2), constraint cou_div_fk foreign key (cou_id) references countrys (c_id));
+
+Table created.
+
+SQL> create table district(dis_id number(2) primary key, dis_name varchar2(12), cou_id number(2), constraint cou_dis_fk foreign key (cou_id) references countrys (c_id), divi_id number(2), constraint div_dis_fk foreign key (divi_id) references division(div_id) );
+
+Table created.
+
+SQL> create table thana(t_id number(2) primary key, t_name varchar2(12), cou_id number(2), constraint cou_tha_fk foreign key (cou_id) references countrys (c_id), divi_id number(2), constraint div_tha_fk foreign key (divi_id) references division(div_id), dist_id number(2), constraint dis_tha_fk foreign key (dist_id) references district (dis_id));
+
+Table created.
+
+SQL> create table unions(u_id number(2) primary key, u_name varchar2(12), cou_id number(2), constraint cou_uni_fk foreign key (cou_id) references countrys (c_id), divi_id number(2), constraint div_uni_fk foreign key (divi_id) references division(div_id), dist_id number(2), constraint dis_uni_fk foreign key (dist_id) references district (dis_id), tha_id number(2), constraint tha_uni_fk foreign key (tha_id) references thana(t_id));
+
+Table created.
+
+SQL> create table village(v_id number(2) primary key, v_name varchar2(12), cou_id number(2), constraint cou_vil_fk foreign key (cou_id) references countrys (c_id), divi_id number(2), constraint div_vil_fk foreign key (divi_id) references division(div_id), dist_id number(2), constraint dis_vil_fk foreign key (dist_id) references district (dis_id), tha_id number(2), constraint tha_vil_fk foreign key (tha_id) references thana(t_id), uni_id number(2), constraint uni_vil_fk foreign key (uni_id) references unions(u_id));
+
+Table created.
+
+SQL> describe countrys;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ C_ID                                      NOT NULL NUMBER(2)
+ C_NAME                                             VARCHAR2(12)
+
+SQL> describe division;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DIV_ID                                    NOT NULL NUMBER(2)
+ DIV_NAME                                           VARCHAR2(12)
+ COU_ID                                             NUMBER(2)
+
+SQL> describe district;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DIS_ID                                    NOT NULL NUMBER(2)
+ DIS_NAME                                           VARCHAR2(12)
+ COU_ID                                             NUMBER(2)
+ DIVI_ID                                            NUMBER(2)
+
+SQL> describe thana;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ T_ID                                      NOT NULL NUMBER(2)
+ T_NAME                                             VARCHAR2(12)
+ COU_ID                                             NUMBER(2)
+ DIVI_ID                                            NUMBER(2)
+ DIST_ID                                            NUMBER(2)
+
+SQL> describe village;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ V_ID                                      NOT NULL NUMBER(2)
+ V_NAME                                             VARCHAR2(12)
+ COU_ID                                             NUMBER(2)
+ DIVI_ID                                            NUMBER(2)
+ DIST_ID                                            NUMBER(2)
+ THA_ID                                             NUMBER(2)
+ UNI_ID                                             NUMBER(2)
+
+SQL> insert into countrys(c_id, c_name) valuse(10, 'Bangladesh')sq

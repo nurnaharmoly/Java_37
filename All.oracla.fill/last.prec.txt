@@ -1,0 +1,500 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Tue Sep 11 08:48:37 2018
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect sys as sysdba;
+Enter password:
+Connected.
+SQL> create user west identified by west;
+
+User created.
+
+SQL> grant dba to west;
+
+Grant succeeded.
+
+SQL> connect;
+Enter user-name: west
+Enter password:
+Connected.
+SQL> create table dep(dep_id number(3) primary key, dep_name varchar2(12) not null);
+
+Table created.
+
+SQL> create table emp(emp_id number(3) primary key, emp_name varchar2(12) not null, mobile number(11) unique, salary number(7,2) check(salary>10000), joining_date date default sysdate, country varchar2(12) default'BD', dep_id number(3), constraint emp_dep_fk foreign key dep_id references dep on delete cascade);
+create table emp(emp_id number(3) primary key, emp_name varchar2(12) not null, mobile number(11) unique, salary number(7,2) check(salary>10000), joining_date date default sysdate, country varchar2(12) default'BD', dep_id number(3), constraint emp_dep_fk foreign key dep_id references dep on delete cascade)
+                                                                                                                                                                                                                                                                          *
+ERROR at line 1:
+ORA-00906: missing left parenthesis
+
+
+SQL> create table emp(emp_id number(3) primary key, emp_name varchar2(12) not null, mobile number(11) unique, salary number(7,2) check(salary>10000), joining_date date default sysdate, country varchar2(12) default'BD', dep_id number(3), constraint emp_dep_fk foreign key (dep_id) references dep on delete cascade );
+
+Table created.
+
+SQL> describe dep;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEP_ID                                    NOT NULL NUMBER(3)
+ DEP_NAME                                  NOT NULL VARCHAR2(12)
+
+SQL> describe emp;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL NUMBER(3)
+ EMP_NAME                                  NOT NULL VARCHAR2(12)
+ MOBILE                                             NUMBER(11)
+ SALARY                                             NUMBER(7,2)
+ JOINING_DATE                                       DATE
+ COUNTRY                                            VARCHAR2(12)
+ DEP_ID                                             NUMBER(3)
+
+SQL> create table d_backup as select * from dep;
+
+Table created.
+
+SQL> create trigger dep_af_ins after insert on dep for each row
+  2  declare
+  3  begin
+  4  insert into d_backup(dep_id, dep_name) values(:new.dep_id, :new.dep_name);
+  5  end;
+  6  /
+
+Trigger created.
+
+SQL> create trigger dep_af_up after update on dep for each row
+  2  declare
+  3  begin
+  4  update d_backup set  dep_name=:new.dep_name where dep_id=:old.dep_id;
+  5  end;
+  6  /
+
+Trigger created.
+
+SQL> create trigger dep_af_del after delete on dep for each row
+  2  declare
+  3  begin
+  4  delete d_backup where dep_id=:old.dep_id;
+  5  end;
+  6  /
+
+Trigger created.
+
+SQL> create procedure pro_dep_ins(
+  2  d_dep_id in dep.dep_id%type,
+  3  d_dep_name in dep.dep_name%type
+  4  )
+  5  is
+  6  begin
+  7  insert into dep(dep_id, dep_name) values(d_dep_id, d_dep_name);
+  8  end;
+  9  /
+
+Procedure created.
+
+SQL> create procedure pro_dep_up(
+  2  d_dep_id in dep.dep_id%type,
+  3  d_dep_name in dep.dep_name%type
+  4  )
+  5  is
+  6  begin
+  7  update dep set dep_name=d_dep_name where dep_id=d_dep_id;
+  8  end;
+  9  /
+
+Procedure created.
+
+SQL> create procedure pro_dep_del(
+  2  d_dep_id in dep.dep_id%type,
+  3  d_dep_name in dep.dep_name%type
+  4  )
+  5  is
+  6  begin
+  7  delete dep where dep_id=d_dep_id;
+  8  end;
+  9  /
+
+Procedure created.
+
+SQL> create sequence seq_dep
+  2  increment by 10
+  3  start with 10;
+
+Sequence created.
+
+SQL> create sequence seq_emp
+  2  increment by 4
+  3  start with 1;
+
+Sequence created.
+
+SQL> select index_name from user_indexes;
+
+INDEX_NAME
+------------------------------
+SYS_C007508
+SYS_C007511
+SYS_C007512
+
+SQL> create index dep_inx on dep(dep_name);
+
+Index created.
+
+SQL> select index_name from user_indexes;
+
+INDEX_NAME
+------------------------------
+SYS_C007508
+SYS_C007511
+SYS_C007512
+DEP_INX
+
+SQL> begin
+  2  /
+begin
+    *
+ERROR at line 1:
+ORA-06550: line 1, column 5:
+PLS-00103: Encountered the symbol "end-of-file" when expecting one of the
+following:
+( begin case declare exit for goto if loop mod null pragma
+raise return select update while with <an identifier>
+<a double-quoted delimited-identifier> <a bind variable> <<
+continue close current delete fetch lock insert open rollback
+savepoint set sql execute commit forall merge pipe purge
+
+
+SQL> begin
+  2  pro_dep_ins(seq_dep.nextval, 'Admin');
+  3  end;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> begin
+  2  pro_dep_ins(seq_dep.nextval, 'Softwarw');
+  3  end;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> begin
+  2  pro_dep_ins(seq_dep.nextval, 'Softwarw');
+  3  end;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> create view dep_vw as select * from dep;
+
+View created.
+
+SQL> select view_name from user_views;
+
+VIEW_NAME
+------------------------------
+DEP_VW
+
+SQL> create synonym dep_syn for dep;
+
+Synonym created.
+
+SQL> create synonym dep_vw_syn for dep_vw;
+
+Synonym created.
+
+SQL> select * from dep_syn;
+
+    DEP_ID DEP_NAME
+---------- ------------
+        10 Admin
+        20 Softwarw
+        30 Softwarw
+
+SQL> show autocommit;
+autocommit OFF
+SQL> set autocommit;
+SP2-0281: autocommit missing set option
+Usage: SET AUTO[COMMIT] { OFF | ON | IMM[EDIATE] | n }
+SQL> set autocommit on;
+SQL> show autocommit;
+autocommit IMMEDIATE
+SQL> create table emp_info (emp_id number(3) primary key, emp_name varchar2(12), manager_id number(5), sex varchar2(12) check  (sex= 'Male' or 'Female'), salary number(7,2) default 'BD');
+create table emp_info (emp_id number(3) primary key, emp_name varchar2(12), manager_id number(5), sex varchar2(12) check  (sex= 'Male' or 'Female'), salary number(7,2) default 'BD')
+                                                                                                                                                  *
+ERROR at line 1:
+ORA-00920: invalid relational operator
+
+
+SQL> create table emp_info (emp_id number(3) primary key, emp_name varchar2(12), manager_id number(5), sex varchar2(12) check  (sex= 'Male' or sex='Female'), salary number(7,2) default 'BD');
+create table emp_info (emp_id number(3) primary key, emp_name varchar2(12), manager_id number(5), sex varchar2(12) check  (sex= 'Male' or sex='Female'), salary number(7,2) default 'BD')
+                                                                                                                                                                                    *
+ERROR at line 1:
+ORA-01722: invalid number
+
+
+SQL> create table emp_info (emp_id number(3) primary key, emp_name varchar2(12), manager_id number(5), sex varchar2(12) check  (sex= 'Male' or sex='Female'), salary number(7,2) default '15000');
+
+Table created.
+
+SQL> insert into emp_info(emp_id, epm_name, manager_id, sex, salary) values(1, 'nila', 510, 'female', 20000);
+insert into emp_info(emp_id, epm_name, manager_id, sex, salary) values(1, 'nila', 510, 'female', 20000)
+                             *
+ERROR at line 1:
+ORA-00904: "EPM_NAME": invalid identifier
+
+
+SQL> insert into emp_info(emp_id, emp_name, manager_id, sex, salary) values(1, 'nila', 510, 'female', 20000);
+insert into emp_info(emp_id, emp_name, manager_id, sex, salary) values(1, 'nila', 510, 'female', 20000)
+*
+ERROR at line 1:
+ORA-02290: check constraint (WEST.SYS_C007515) violated
+
+
+SQL> insert into emp_info(emp_id, emp_name, manager_id, sex, salary) values(1, 'nila', 510, 'Female', 20000);
+
+1 row created.
+
+Commit complete.
+SQL> insert into emp_info(emp_id, emp_name, manager_id, sex, salary) values(2, 'roni', 510, 'Male', 13000);
+
+1 row created.
+
+Commit complete.
+SQL> create sequence seq_emp
+  2  increment by 1
+  3  start with 3;
+create sequence seq_emp
+                *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> create sequence seq_e_info
+  2  increment by 1
+  3  start with 3;
+
+Sequence created.
+
+SQL> insert into emp_info(emp_id, emp_name, manager_id, sex, salary) values(seq_e_info.nextval, 'ruma', 540, 'Female', 18000);
+
+1 row created.
+
+Commit complete.
+SQL> insert into emp_info(emp_id, emp_name, manager_id, sex, salary) values(seq_e_info.nextval, 'reza', 550, 'Male', 17000);
+
+1 row created.
+
+Commit complete.
+SQL> insert into emp_info(emp_id, emp_name, manager_id, sex) values(seq_e_info.nextval, 'rogu', 560, 'Male');
+
+1 row created.
+
+Commit complete.
+SQL> select * from emp_info;
+
+    EMP_ID EMP_NAME     MANAGER_ID SEX              SALARY
+---------- ------------ ---------- ------------ ----------
+         1 nila                510 Female            20000
+         2 roni                510 Male              13000
+         3 ruma                540 Female            18000
+         4 reza                550 Male              17000
+         5 rogu                560 Male              15000
+
+SQL> alter table emp_info add dept_id number(3);
+
+Table altered.
+
+SQL> create table dept_info (dept_id number(3) primary key, dept_name varchar2(12), manager_id number(5), dep_location varchar2(12));
+
+Table created.
+
+SQL> alter table emp_info add constraint dep_emp_fk foreign key (dept_id) references dep on cascade;
+alter table emp_info add constraint dep_emp_fk foreign key (dept_id) references dep on cascade
+                                                                                       *
+ERROR at line 1:
+ORA-00905: missing keyword
+
+
+SQL> alter table emp_info add constraint dep_emp_fk foreign key (dept_id) references dep on delete cascade;
+
+Table altered.
+
+SQL> create sequence seq_d_info
+  2  increment by 10
+  3  start with 310;
+
+Sequence created.
+
+SQL> insert into dept_info(dept_id, dept_name, manager_id, dep_location) values(seq_e_info.nextval, 'Account', 560, 'Dhaka');
+
+1 row created.
+
+Commit complete.
+SQL> insert into dept_info(dept_id, dept_name, manager_id, dep_location) values(seq_e_info.nextval, 'Marketing', 540, 'Khulna');
+
+1 row created.
+
+Commit complete.
+SQL> insert into dept_info(dept_id, dept_name, manager_id, dep_location) values(seq_e_info.nextval, 'Finance', 520, 'Barisal');
+
+1 row created.
+
+Commit complete.
+SQL> insert into dept_info(dept_id, dept_name, manager_id, dep_location) values(seq_e_info.nextval, 'Management', 550, 'Shylet');
+
+1 row created.
+
+Commit complete.
+SQL> insert into dept_info(dept_id, dept_name, manager_id, dep_location) values(seq_e_info.nextval, 'Programing', 590, 'Chittagon');
+
+1 row created.
+
+Commit complete.
+SQL> select * dept_info;
+select * dept_info
+         *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select * from dept_info;
+
+   DEPT_ID DEPT_NAME    MANAGER_ID DEP_LOCATION
+---------- ------------ ---------- ------------
+         6 Account             560 Dhaka
+         7 Marketing           540 Khulna
+         8 Finance             520 Barisal
+         9 Management          550 Shylet
+        10 Programing          590 Chittagon
+
+SQL> delete dept_info;
+
+5 rows deleted.
+
+Commit complete.
+SQL> insert into dept_info(dept_id, dept_name, manager_id, dep_location) values(seq_d_info.nextval, 'Programing', 590, 'Chittagon');
+
+1 row created.
+
+Commit complete.
+SQL> insert into dept_info(dept_id, dept_name, manager_id, dep_location) values(seq_d_info.nextval, 'Management', 550, 'Shylet');
+
+1 row created.
+
+Commit complete.
+SQL> insert into dept_info(dept_id, dept_name, manager_id, dep_location) values(seq_d_info.nextval, 'Finance', 520, 'Barisal');
+
+1 row created.
+
+Commit complete.
+SQL> insert into dept_info(dept_id, dept_name, manager_id, dep_location) values(seq_d_info.nextval, 'Marketing', 540, 'Khulna');
+
+1 row created.
+
+Commit complete.
+SQL> insert into dept_info(dept_id, dept_name, manager_id, dep_location) values(seq_d_info.nextval, 'Account', 560, 'Dhaka');
+
+1 row created.
+
+Commit complete.
+SQL> select * from dept_info;
+
+   DEPT_ID DEPT_NAME    MANAGER_ID DEP_LOCATION
+---------- ------------ ---------- ------------
+       330 Finance             520 Barisal
+       340 Marketing           540 Khulna
+       350 Account             560 Dhaka
+       310 Programing          590 Chittagon
+       320 Management          550 Shylet
+
+SQL> update emp_info set dept_id = 310 where emp_id=1;
+update emp_info set dept_id = 310 where emp_id=1
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (WEST.DEP_EMP_FK) violated - parent key not
+found
+
+
+SQL> select * from emp_info;
+
+    EMP_ID EMP_NAME     MANAGER_ID SEX              SALARY    DEPT_ID
+---------- ------------ ---------- ------------ ---------- ----------
+         1 nila                510 Female            20000
+         2 roni                510 Male              13000
+         3 ruma                540 Female            18000
+         4 reza                550 Male              17000
+         5 rogu                560 Male              15000
+
+SQL> update emp_info set dept_id = 340 where emp_id=2;
+update emp_info set dept_id = 340 where emp_id=2
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (WEST.DEP_EMP_FK) violated - parent key not
+found
+
+
+SQL> alter table emp_info drop column dept_id;
+
+Table altered.
+
+SQL> select * from emp_info;
+
+    EMP_ID EMP_NAME     MANAGER_ID SEX              SALARY
+---------- ------------ ---------- ------------ ----------
+         1 nila                510 Female            20000
+         2 roni                510 Male              13000
+         3 ruma                540 Female            18000
+         4 reza                550 Male              17000
+         5 rogu                560 Male              15000
+
+SQL> alter table emp_info add dept_id number(3);
+
+Table altered.
+
+SQL> update emp_info set dept_id = 310 where emp_id=1;
+
+1 row updated.
+
+Commit complete.
+SQL> update emp_info set dept_id = 340 where emp_id=2;
+
+1 row updated.
+
+Commit complete.
+SQL> select * from emp_info;
+
+    EMP_ID EMP_NAME     MANAGER_ID SEX              SALARY    DEPT_ID
+---------- ------------ ---------- ------------ ---------- ----------
+         1 nila                510 Female            20000        310
+         2 roni                510 Male              13000        340
+         3 ruma                540 Female            18000
+         4 reza                550 Male              17000
+         5 rogu                560 Male              15000
+
+SQL> create view d_e_vw (emp_id, emp_name , salary, dept_name, sex, dep_location) as select (e.emp_id, e.emp_name , e.salary, d.dept_name, e.sex, d.dep_location);
+create view d_e_vw (emp_id, emp_name , salary, dept_name, sex, dep_location) as select (e.emp_id, e.emp_name , e.salary, d.dept_name, e.sex, d.dep_location)
+                                                                                                *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+
+SQL> create view d_e_vw (emp_id, emp_name , salary, dept_name, sex, dep_location) as select (e.emp_id, e.emp_name , e.salary, d.dept_name, e.sex, d.dep_location) from emp_info e join dept_info d using(manager_id);
+create view d_e_vw (emp_id, emp_name , salary, dept_name, sex, dep_location) as select (e.emp_id, e.emp_name , e.salary, d.dept_name, e.sex, d.dep_location) from emp_info e join dept_info d using(manager_id)
+                                                                                                *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+
+SQL> create view d_e_vw (emp_id, emp_name , salary, dept_name, sex, dep_location) as select e.emp_id, e.emp_name , e.salary, d.dept_name, e.sex, d.dep_location from emp_info e join dept_info d using(manager_id);
+
+View created.
+
+SQL> select emp_name, dept_name, dep_location from d_e_vw where sex= 'Female';
+
+EMP_NAME     DEPT_NAME    DEP_LOCATION
+------------ ------------ ------------
+ruma         Marketing    Khulna
+
+SQL>

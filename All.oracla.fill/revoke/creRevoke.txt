@@ -1,0 +1,462 @@
+SQL> show autocommit;
+autocommit OFF
+SQL> set autocommit on;
+SQL> connect sys as sysdba;
+Connected.
+SQL> create user xyz identified by xyz;
+
+User created.
+
+SQL> connect;
+Enter user-name: xyz
+ERROR:
+ORA-01045: user XYZ lacks CREATE SESSION privilege; logon denied 
+
+
+Warning: You are no longer connected to ORACLE.
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> grant create  session to xyz;
+
+Grant succeeded.
+
+
+SQL> connect;
+Enter user-name: xyz
+Connected.
+SQL> create table test(id number(2) primary key, name varchar2(12));
+create table test(id number(2) primary key, name varchar2(12))
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> alter user xyz quota 50m on system;
+
+User altered.
+
+SQL> connect;
+Enter user-name: xyz
+Connected.
+
+SQL> create table test(id number(2) primary key, name varchar2(12) not null);
+create table test(id number(2) primary key, name varchar2(12) not null)
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> grant create table to xyz;
+
+Grant succeeded.
+
+SQL> connect;
+Enter user-name: xyz
+Connected.
+SQL> create table test(id number(2) primary key, name varchar2(12) not null);
+
+Table created.
+
+SQL> insert into test(id, name) values(1, 'noli');
+
+1 row created.
+
+Commit complete.
+SQL> select * from test;
+
+        ID NAME                                                                 
+---------- ------------                                                         
+         1 noli                                                                 
+
+SQL> connect sys as sysdba;
+Connected.
+
+SQL> create user abc identified by abc;
+
+User created.
+
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> connect;
+Enter user-name: abc
+ERROR:
+ORA-01045: user ABC lacks CREATE SESSION privilege; logon denied 
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> grant create session to abc;
+
+Grant succeeded.
+
+SQL> connect;
+Enter user-name: abc
+Connected.
+SQL> create table test(id number(2), name varchar2(12));
+create table test(id number(2), name varchar2(12))
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> connect sys as sysdba;
+Connected.
+
+SQL> grant create table to abc;
+
+Grant succeeded.
+
+SQL> connect;
+Enter user-name: abc
+Connected.
+SQL> create table test(id number(2), name varchar2(12));
+create table test(id number(2), name varchar2(12))
+*
+ERROR at line 1:
+ORA-01950: no privileges on tablespace 'SYSTEM' 
+
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> alter user abc quota 50m on system;
+
+User altered.
+
+
+SQL> connect;
+Enter user-name: abc
+Connected.
+SQL> create table test(id number(2), name varchar2(12));
+
+Table created.
+
+SQL> connect sys as sysdba;
+Connected.
+
+SQL> create user xyz2 identified by xyz2;
+
+User created.
+
+SQL> create role manager;
+
+Role created.
+
+SQL> grant create session, create table, create view to manager;
+
+Grant succeeded.
+
+SQL> grant manager to xyz2;
+
+Grant succeeded.
+
+SQL> alter user xyz2 quota 500m on system;
+
+User altered.
+
+SQL> connect ;
+Enter user-name: xyz2
+Connected.
+SQL> create table test(id number(2), name varchar2(12));
+
+Table created.
+
+SQL> insert into test(id, name) values(1, 'nila');
+
+1 row created.
+
+Commit complete.
+SQL> insert into test(id, name) values(2, 'roni');
+
+1 row created.
+
+Commit complete.
+SQL> select * from test;
+
+        ID NAME                                                                 
+---------- ------------                                                         
+         1 nila                                                                 
+         2 roni                                                                 
+
+SQL> create view t_vw as select * from test;
+
+View created.
+
+SQL> select view_name from user_views;
+
+VIEW_NAME                                                                       
+------------------------------                                                  
+T_VW                                                                            
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> revoke create view from manager;
+
+Revoke succeeded.
+
+SQL> connect;
+Enter user-name: xyz2
+Connected.
+SQL> select view_name from user_views;
+
+VIEW_NAME                                                                       
+------------------------------                                                  
+T_VW                                                                            
+
+SQL> create table queen(id number(2), name varchar2(12));
+
+Table created.
+
+SQL> insert into queen(id, name) values(1, 'nila');
+
+1 row created.
+
+Commit complete.
+SQL> insert into queen(id, name) values(2, 'romy');
+
+1 row created.
+
+Commit complete.
+SQL> select view_name from user_views;
+
+VIEW_NAME                                                                       
+------------------------------                                                  
+T_VW                                                                            
+
+SQL> create view qu_vw as select * from queen;
+create view qu_vw as select * from queen
+            *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> connect;
+Enter user-name: xyz2
+Connected.
+SQL> select * from xyz.test;
+select * from xyz.test
+                  *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> grant select on xyz.test to xyz2 with grant option;
+
+Grant succeeded.
+
+SQL> select * from xyz.test;
+
+        ID NAME                                                                 
+---------- ------------                                                         
+         1 noli                                                                 
+
+SQL> connect;
+Enter user-name: xyz2
+Connected.
+SQL> select * from xyz.test;
+
+        ID NAME                                                                 
+---------- ------------                                                         
+         1 noli                                                                 
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> create user zyx identified by zyx;
+
+User created.
+
+SQL> connect
+Enter user-name: zyx
+ERROR:
+ORA-01045: user ZYX lacks CREATE SESSION privilege; logon denied 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> connect sys as sysdba;
+Connected.
+SQL> grant create session to zyx;
+
+Grant succeeded.
+
+SQL> connect
+Enter user-name: zyx
+Connected.
+
+SQL> create table jobs(id number(2), name varchar2(10));
+create table jobs(id number(2), name varchar2(10))
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> grant create table to zyx;
+
+Grant succeeded.
+
+SQL> create table jobs(id number(2), name varchar2(10));
+
+Table created.
+
+SQL> connect;
+Enter user-name: zyx
+Connected.
+SQL> create table jobs(id number(2), name varchar2(10));
+create table jobs(id number(2), name varchar2(10))
+*
+ERROR at line 1:
+ORA-01950: no privileges on tablespace 'SYSTEM' 
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> alter user zyx quota 500m on system;
+
+User altered.
+
+SQL> connect;
+Enter user-name: zyx
+Connected.
+SQL> create table jobs(id number(2), name varchar2(10));
+
+Table created.
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> create user zyx2 identified by zyx2;
+
+User created.
+
+SQL> create role man;
+
+Role created.
+
+SQL> grant create session, create table , create view to man;
+
+Grant succeeded.
+
+SQL> grant man to zyx2;
+
+Grant succeeded.
+
+SQL> alter user zyx2 quota 500m on system;
+
+User altered.
+
+SQL> connect;
+Enter user-name: zyx2
+Connected.
+SQL> create table jobs(id number(2), name varchar2(10));
+
+Table created.
+
+SQL> insert into jobs(id, name) values(1, 'Rita');
+
+1 row created.
+
+Commit complete.
+SQL> insert into jobs(id, name) values(2, 'Roni');
+
+1 row created.
+
+Commit complete.
+SQL> insert into jobs(id, name) values(3, 'Riya');
+
+1 row created.
+
+Commit complete.
+SQL> select * from jobs;
+
+        ID NAME                                                                 
+---------- ----------                                                           
+         1 Rita                                                                 
+         2 Roni                                                                 
+         3 Riya                                                                 
+
+SQL> select view_name from user_views;
+
+no rows selected
+
+SQL> create view j_vw as select * from jobs;
+
+View created.
+
+SQL> select view_name from user_views;
+
+VIEW_NAME                                                                       
+------------------------------                                                  
+J_VW                                                                            
+
+SQL> connect sys as sysdba;
+Connected.
+SQL> revoke create view from man;
+
+Revoke succeeded.
+
+SQL> connect
+Enter user-name: zyx2
+Connected.
+SQL> create table dummy(id number(2), name varchar2(10));
+
+Table created.
+
+SQL> insert into jobs(id, name) values(1, 'Rita');
+
+1 row created.
+
+Commit complete.
+SQL> insert into dummy(id, name) values(1, 'Roni');
+
+1 row created.
+
+Commit complete.
+SQL> insert into dummy(id, name) values(2, 'tomi');
+
+1 row created.
+
+Commit complete.
+SQL> insert into dummy(id, name) values(3, 'emy');
+
+1 row created.
+
+Commit complete.
+SQL> select * from dummy;
+
+        ID NAME                                                                 
+---------- ----------                                                           
+         1 Roni                                                                 
+         2 tomi                                                                 
+         3 emy                                                                  
+
+SQL> select view_name from user_views;
+
+VIEW_NAME                                                                       
+------------------------------                                                  
+J_VW                                                                            
+
+SQL> create view d_vw as select * from dummy;
+create view d_vw as select * from dummy
+            *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> select * from user_sys_privs;
+
+no rows selected
+
+SQL> select * from user_tab_privs;
+
+no rows selected
+
+SQL> select * from user_role_privs;
+
+USERNAME                       GRANTED_ROLE                   ADM DEF OS_       
+------------------------------ ------------------------------ --- --- ---       
+ZYX2                           MAN                            NO  YES NO
+
+SQL> spool off;

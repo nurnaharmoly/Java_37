@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+</head>
+
+<body>
+<button onClick="splicx()">Click</button>
+<p id=moly></p>
+<script>
+var country = ["bd", "id", "pk", "us", "gm"];
+document.getElementById('moly').innerHTML=country
+function splicx(){
+country.splice(2,3,"usk","usa");
+document.getElementById('moly').innerHTML=country
+}
+document.write(country)
+
+</script>
+</body>
+</html>

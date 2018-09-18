@@ -1,0 +1,168 @@
+SQL> connect sys as sysdba;
+Connected.
+
+SQL> create user eid2 identified by eid;
+
+User created.
+
+SQL> grant dba to eid2;
+
+Grant succeeded.
+
+SQL> connect
+Enter user-name: eid2
+Connected.
+SQL> create table departments(dep_id number(2) primary key, department_name varchar2(8) not null);
+
+Table created.
+
+SQL> create table employees(emp_id number(2) primary key, emp_name varchar2(8) not null, mobile number(11) unique, joining_date date default sysdate, country varchar2(8) default 'BD', dep_id number(2), constraint emp_dep_fk foreign key (dep_id) references departments(dep_id));
+
+Table created.
+
+SQL> drop table employees;
+
+Table dropped.
+
+SQL> create table employees(emp_id number(2) primary key, emp_name varchar2(8) not null, mobile number(11) unique,salary number(5,2) check(salary>10000), joining_date date default sysdate, country varchar2(8) default 'BD', dep_id number(2), constraint emp_dep_fk foreign key (dep_id) references departments(dep_id));
+
+Table created.
+
+SQL> create sequence dep_seq increment by 10 start with 10 nomaxvalue nominvalue nocycle nocache;
+
+Sequence created.
+
+SQL> create sequence emp_seq increment by 5 start with 1 nomaxvalue nominvalue nocycle nocache;
+
+Sequence created.
+
+SQL> select sequence_name from user_sequences;
+
+SEQUENCE_NAME                                                                   
+------------------------------                                                  
+DEP_SEQ                                                                         
+EMP_SEQ                                                                         
+
+SQL> select index_name from user_indexes;
+
+INDEX_NAME                                                                      
+------------------------------                                                  
+SYS_C007145                                                                     
+SYS_C007137                                                                     
+SYS_C007144                                                                     
+
+SQL> create index dep_inx on departments (department_name) ;
+
+Index created.
+
+SQL> select index_name from user_indexes;
+
+INDEX_NAME                                                                      
+------------------------------                                                  
+DEP_INX                                                                         
+SYS_C007145                                                                     
+SYS_C007137                                                                     
+SYS_C007144                                                                     
+
+SQL> insert into departments(dep_id, department_name) values(dep_seq.nextval, 'admin');
+
+1 row created.
+
+SQL> insert into departments(dep_id, department_name) values(dep_seq.nextval, 'software');
+
+1 row created.
+
+SQL> insert into departments(dep_id, department_name) values(dep_seq.nextval, 'marketing');
+insert into departments(dep_id, department_name) values(dep_seq.nextval, 'marketing')
+                                                                         *
+ERROR at line 1:
+ORA-12899: value too large for column "EID2"."DEPARTMENTS"."DEPARTMENT_NAME" 
+(actual: 9, maximum: 8) 
+
+
+SQL> insert into departments(dep_id, department_name) values(dep_seq.nextval, 'markting');
+
+1 row created.
+
+SQL> describe employees;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL NUMBER(2)
+ EMP_NAME                                  NOT NULL VARCHAR2(8)
+ MOBILE                                             NUMBER(11)
+ SALARY                                             NUMBER(5,2)
+ JOINING_DATE                                       DATE
+ COUNTRY                                            VARCHAR2(8)
+ DEP_ID                                             NUMBER(2)
+
+SQL> describe departments;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEP_ID                                    NOT NULL NUMBER(2)
+ DEPARTMENT_NAME                           NOT NULL VARCHAR2(8)
+
+SQL> select * from departments;
+
+    DEP_ID DEPARTME                                                             
+---------- --------                                                             
+        10 admin                                                                
+        20 software                                                             
+        40 markting                                                             
+
+SQL> create view dep_vw as select dep_id, department_name from departments;
+
+View created.
+
+SQL> select view_name from user_views;
+
+VIEW_NAME                                                                       
+------------------------------                                                  
+DEP_VW                                                                          
+
+SQL> describe dep_vw;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEP_ID                                    NOT NULL NUMBER(2)
+ DEPARTMENT_NAME                           NOT NULL VARCHAR2(8)
+
+SQL> select * from dep_vw;
+
+    DEP_ID DEPARTME                                                             
+---------- --------                                                             
+        10 admin                                                                
+        20 software                                                             
+        40 markting                                                             
+
+SQL> create synonym dep.tab_sym for departments;
+create synonym dep.tab_sym for departments
+               *
+ERROR at line 1:
+ORA-01917: user or role '' does not exist 
+
+
+SQL> create synonym dep_sym for departments;
+
+Synonym created.
+
+SQL> create synonym depvw_sym for dep_vw;
+
+Synonym created.
+
+SQL> select * from dep_sym;
+
+    DEP_ID DEPARTME                                                             
+---------- --------                                                             
+        10 admin                                                                
+        20 software                                                             
+        40 markting                                                             
+
+SQL> select * from depvw_sym;
+
+    DEP_ID DEPARTME                                                             
+---------- --------                                                             
+        10 admin                                                                
+        20 software                                                             
+        40 markting                                                         
+
+
+SQL> spool off;

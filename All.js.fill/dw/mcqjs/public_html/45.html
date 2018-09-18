@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+</head>
+
+<body>
+<script language="javascript">
+ function x() {
+	  var qpt = "First come, first served"; 
+	  var pattern = /first/g; 
+	  document.write(qpt.match(pattern)[1]);
+	   }
+	   x();           
+	   </script> 
+       <p></p>
+<script language="javascript">
+ function x() {
+	  var qpt = "First come, first served"; 
+	  var pattern = /first/gi; 
+	  document.write(qpt.match(pattern)[1]);
+	   }
+	   x();           
+	   </script>
+             <p></p>
+<script language="javascript">
+ function x() {
+	  var qpt = "First come, first served"; 
+	  var pattern = /first/gi; 
+	  document.write(qpt.match(pattern)[0]);
+	   }
+	   x();           
+	   </script>      <p></p>
+<script language="javascript">
+ function x() {
+	  var qpt = "First come, first served"; 
+	  var pattern = /first/i;
+	  document.write(qpt.match(pattern)[1]);
+	   }
+	   x();           
+	   </script> 
+  <p></p>
+ <script language="javascript">
+ function x() {
+	  var qpt = "First come, first served"; 
+	  var pattern = /first/i;
+	  document.write(qpt.match(pattern)[0]);
+	   }
+	   x();           
+	   </script> 
+   <p></p>
+ <script language="javascript">
+ function x() {
+	  var qpt = "First come, first served"; 
+	  var pattern = /first/g;
+	  document.write(qpt.match(pattern)[0]);
+	   }
+	   x();           
+	   </script> 
+      
+  
+</body>
+</html>

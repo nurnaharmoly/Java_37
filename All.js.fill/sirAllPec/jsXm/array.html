@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+</head>
+
+<body>
+<script>
+var student=['A','B','C',30,40]
+document.write(student);
+document.write("<hr>");
+for(var i=0; i<student.length; i++){
+	document.write(student[i]+"<br>");
+	}
+document.write("<hr>");
+///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+var stds = new Array(5);
+document.write(stds.length);
+document.write("<hr>");
+stds[0] = 'a';
+stds[1] = 'b';
+stds[2] = 'c';
+stds[3] = 30;
+stds[4] = 60;
+document.write([stds]);
+document.write("<hr>");
+document.write(stds.length);
+document.write("<hr>");
+///////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+var students = {fn: 'Sami', ln: 'R', age: 34, gnd:'Male'};
+document.write(students.fn);
+document.write("<hr>");
+var trees = new Array("Ema","dima","lima")
+var bigBush = trees.join(", ");
+document.write(bigBush);
+document.write("<hr>");
+document.write(typeof trees);
+document.write("<hr>");
+document.write(typeof bigBush);
+document.write("<hr>");
+///////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+var names = ['A','B','C'];
+document.write(typeof names);
+document.write("<hr>");
+var newNames= names.write(newNames);
+document.write(typeof newNames);
+document.write("<hr>");
+////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+var treees1 = new Array("Ema","dima","lima");
+var treees2 = new Array ("Amm","Jam");
+var biggBush = treees1.concat(treees2);
+document.write(typeof biggBush);
+document.write(biggBush+"<br>");
+document.write("<hr>");
+
+//////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+var stx = ['e','r','u',60,70,90]
+stx.sort()
+document.write(stx);
+document.write("<hr>")
+</script>
+</body>
+</html>

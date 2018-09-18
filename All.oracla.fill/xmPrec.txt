@@ -1,0 +1,143 @@
+create or replace trigger dep_af_ins after insert on departments for each row
+declare
+begin 
+insert into dep_backup(dep_id, dep_name) values(:new.dep_id, :new.dep_name);
+dbms_output.put_line('Trigger successful');
+end;
+
+
+
+
+create or replace trigger emp_af_ins after insert on employees for each row
+declare
+begin 
+insert into emp_backup(emp_id, emp_name, mobile, salary, joining_date, country, dep_id) values(:new.emp_id, :new.emp_name, :new.mobile, :new.salary,  :new.joining_date, :new.country, :new.dep_id );
+dbms_output.put_line('Trigger successful');
+end;
+
+
+
+
+create or replace trigger dep_af_up after update on departments for each row
+declare
+begin 
+update dep_backup set dep_name=:new.dep_name where dep_id=:old.dep_id;
+dbms_output.put_line('Trigger successful');
+end;
+
+
+create or replace trigger emp_af_up after update on employees for each row
+declare
+begin 
+update emp_backup set  emp_name=:new.emp_name, mobile=:new.mobile, salary=:new.salary, joining_date=:new.joining_date, country=:new.country, dep_id=:new.dep_id where emp_id=:old.emp_id;
+dbms_output.put_line('Trigger successful');
+end;
+
+
+create or replace trigger dep_af_del after delete on departments for each row
+declare
+begin 
+delete dep_backup where dep_id=:old.dep_id;
+dbms_output.put_line('Trigger successful');
+end;
+
+
+create or replace trigger emp_af_del after update on employees for each row
+declare
+begin 
+delete emp_backup  where emp_id=:old.emp_id;
+dbms_output.put_line('Trigger successful');
+end;
+
+
+create sequence dep_seq
+increment by 10
+start with 10
+nomaxvalue
+nocycle
+nocache;
+
+
+create sequence emp_seq
+increment by 5
+start with 1
+nomaxvalue
+nocycle
+nocache;
+
+
+create or replace procedure dep_ins_pro(
+d_dep_id in departments.dep_id%type,
+d_dep_name in departments.dep_name%type)
+is 
+begin
+insert into departments(dep_id, dep_name) values(d_dep_id, d_dep_name);
+end;
+
+
+create or replace procedure dep_up_pro(
+d_dep_id in departments.dep_id%type,
+d_dep_name in departments.dep_name%type)
+is 
+begin
+update departments set dep_name=d_dep_name where dep_id=d_dep_id;
+end;
+
+create or replace procedure dep_del_pro(
+d_dep_id in departments.dep_id%type,
+d_dep_name in departments.dep_name%type)
+is 
+begin
+delete departments  where dep_id=d_dep_id;
+end;
+
+
+begin
+dep_ins_pro(dep_seq.nextval, 'Admin');
+end;
+
+
+create or replace procedure emp_ins_pro(
+e_emp_id in employees.emp_id%type,
+e_emp_name in employees.emp_name%type,
+e_mobile in employees.mobile%type,
+e_salary in employees.salary%type,
+e_joining_date in employees.joining_date%type,
+e_country in employees.country%type,
+e_dep_id in employees.dep_id%type)
+is
+begin 
+insert into employees(emp_id, emp_name, mobile, salary, joining_date, country, dep_id) values(e_emp_id, e_emp_name, e_mobile, e_salary, e_joining_date, e_country, e_dep_id);
+end;
+
+
+create or replace procedure emp_upd_pro(
+e_emp_id in employees.emp_id%type,
+e_emp_name in employees.emp_name%type,
+e_mobile in employees.mobile%type,
+e_salary in employees.salary%type,
+e_joining_date in employees.joining_date%type,
+e_country in employees.country%type,
+e_dep_id in employees.dep_id%type)
+is
+begin 
+update employees set  emp_name=e_emp_name, mobile=e_mobile, salary=e_salary, joining_date=e_joining_date, country=e_country, dep_id=e_dep_id where emp_id=e_emp_id;
+end;
+
+
+
+create or replace procedure emp_del_pro(
+e_emp_id in employees.emp_id%type)
+is
+begin 
+delete employees where emp_id=e_emp_id;
+end;
+
+
+begin
+emp_ins_pro(emp_seq.nextval, 'moly', 034343343, 12000, '12-jan-2012', 'USA', 30);
+end;
+
+
+
+

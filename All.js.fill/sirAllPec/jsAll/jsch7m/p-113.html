@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+</head>
+
+<body>
+<button onClick="openWin()">Open</button>
+<button onClick="moveRel()">Move</button>
+<button onClick="resizeRel()">Resize</button>
+<script>
+var Win;
+function openWin(){
+	win = window.open("samWin.html","win","width=200, height=100")
+	}
+	function moveRel(){
+		win.moveTo(500, 100);
+		win.focus();
+		}
+function resizeRel(){
+	win.resizeBy(300, 150);
+	win.focus();
+	}
+</script>
+</body>
+</html>

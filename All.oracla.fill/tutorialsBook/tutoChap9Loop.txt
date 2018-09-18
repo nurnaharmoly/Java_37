@@ -1,0 +1,49 @@
+1.   declare
+x number := 10;
+
+begin
+loop
+dbms_output.put_line(x);
+x := x+10;
+if x>200 then
+exit;
+end if;
+end loop;
+dbms_output.put_line('After Exit x is: ' || x);
+end;
+
+
+2.          declare
+x number := 10;
+begin 
+loop
+dbms_output.put_line(x);
+x := x+10;
+exit when x>60;
+end loop;
+dbms_output.put_line('After Exit x is:' || x);
+end;
+
+
+3.       declare
+a number(2) := 10;
+begin
+while a<50
+loop
+dbms_output.put_line('value of a: ' || a);
+a := a+1;
+end loop;
+end;
+
+
+4.        declare 
+a number(2);
+begin
+for a in reverse 10..20 
+loop
+dbms_output.put_line('value of a: ' ||a);
+end loop;
+end;
+
+
+5.         

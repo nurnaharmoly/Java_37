@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+</head>
+
+<body>
+
+
+<div style="width:700px; margin:0 auto; background:#9CF; padding:20px;">
+<form name="myform" action="form.html" onSubmit="return sendFormData()">
+Name:<input type="text" name="fname"><br>
+Age:<input type="number" name="age"><br>
+Gender:
+<input type="radio" name="Gender" value="Male">Male
+<input type="radio" name="Gender" value="Female">Female
+<input type="submit" value="Submit" >
+</form>
+</div>
+
+
+<script>
+function sendFormData(){
+var x = document.forms["myform"]["fname"].value;
+var y = document.forms["myform"]["age"].value;
+var z = document.forms["myform"]["Gender"].value;
+if(x==""){
+	alert("Name must be Filed out");
+	return false;
+	}
+
+	if (y<18 || y>70){
+		alert("Age must be between 18 and 70");
+		
+return false ;
+	}
+	if(z==""){
+	alert("Name must be Filed out");
+	return false;
+	}
+    var value1 = "value1";
+	var value2 = "value2";
+	var value3 = "value3";
+	var queryString =
+	"?para1="+value1+
+	"&para2="+value2+
+	"&para3="+value3;
+	
+	window.location.href="form.html"+queryString;
+	}
+</script>
+
+
+<div style="width:700px; margin:0 auto; background:#9CF; padding:20px;">
+<script>
+var queryString = decodeURIComponent(window.location.search);
+queryString = queryString.substring(1);
+var queries = queryString.split("&");
+for (var i=0; i<queries.length; i++){
+	document.write(queries[i]+"<br>");
+	}
+</script>
+</div>
+</body>
+</html>

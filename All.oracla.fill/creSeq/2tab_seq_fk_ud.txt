@@ -1,0 +1,280 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Wed Aug 1 11:39:01 2018
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+Enter user-name: system
+Enter password:
+Connected.
+SQL> create user russia identified by russia;
+
+User created.
+
+SQL> grant dba to russia;
+
+Grant succeeded.
+
+SQL> create table department(d_id number(2), d_name varchar2(12));
+
+Table created.
+
+SQL> create sequence dep_seq increment by 10 start with 50 maxvalue 100 nocycle nocache;
+
+Sequence created.
+
+SQL> insert into department(d_id, d_name) values(dep_seq.nextval, 'Accounting');
+
+1 row created.
+
+SQL> insert into department(d_id, d_name) values(dep_seq.nextval, 'Management');
+
+1 row created.
+
+SQL> insert into department(d_id, d_name) values(dep_seq.nextval, 'marketing');
+
+1 row created.
+
+SQL> insert into department(d_id, d_name) values(dep_seq.nextval, 'Finance');
+
+1 row created.
+
+SQL> insert into department(d_id, d_name) values(dep_seq.nextval, 'English');
+
+1 row created.
+
+SQL> select * from department;
+
+      D_ID D_NAME
+---------- ------------
+        50 Accounting
+        60 Management
+        70 marketing
+        80 Finance
+        90 English
+
+SQL> drop table department;
+
+Table dropped.
+
+SQL> create table department(d_id number(2) primary key, d_name varchar2(12) not null);
+
+Table created.
+
+SQL> create table employe(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobileNo number(12) unique, dep_id number(2), constraint dep_emp_fk foreign key (dep_id) references department(d_id) );
+
+Table created.
+
+SQL> create sequence emp_seq increment by 5 start with 1 maxvalue 200 nocycle nocache;
+
+Sequence created.
+
+SQL> insert into employe(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'runa', 34000, 0173523525, 60);
+insert into employe(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'runa', 34000, 0173523525, 60)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (SYSTEM.DEP_EMP_FK) violated - parent key not
+found
+
+SQL> create table department(d_id number(2) primary key, d_name varchar2(12) not null);
+create table department(d_id number(2) primary key, d_name varchar2(12) not null)
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> insert into department(d_id, d_name) values(dep_seq.nextval, 'English');
+insert into department(d_id, d_name) values(dep_seq.nextval, 'English')
+                                            *
+ERROR at line 1:
+ORA-01438: value larger than specified precision allowed for this column
+
+
+SQL> drop table department;
+drop table department
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys
+
+
+SQL> create table department(d_id number(2) primary key, d_name varchar2(12) not null);
+create table department(d_id number(2) primary key, d_name varchar2(12) not null)
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+SQL>
+SQL> create table dep(d_id number(2) primary key, d_name varchar2(12) not null);
+
+Table created.
+
+SQL> insert into dep(d_id, d_name) values(dep_seq.nextval, 'English');
+insert into dep(d_id, d_name) values(dep_seq.nextval, 'English')
+                                     *
+ERROR at line 1:
+ORA-08004: sequence DEP_SEQ.NEXTVAL exceeds MAXVALUE and cannot be instantiated
+
+
+SQL> create sequence der_seq increment by 10 start with 50 maxvalue 100 nocycle nocache;
+
+Sequence created.
+
+SQL> insert into dep(d_id, d_name) values(der_seq.nextval, 'English');
+
+1 row created.
+
+SQL> insert into dep(d_id, d_name) values(der_seq.nextval, 'Accounting');
+
+1 row created.
+
+SQL> insert into dep(d_id, d_name) values(der_seq.nextval, 'Marketing');
+
+1 row created.
+
+SQL> insert into dep(d_id, d_name) values(der_seq.nextval, 'Management');
+
+1 row created.
+
+SQL> insert into dep(d_id, d_name) values(der_seq.nextval, 'Mana');
+
+1 row created.
+
+SQL> insert into dep(d_id, d_name) values(der_seq.nextval, 'reiiee');
+insert into dep(d_id, d_name) values(der_seq.nextval, 'reiiee')
+                                     *
+ERROR at line 1:
+ORA-01438: value larger than specified precision allowed for this column
+
+
+SQL> create table emp(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobileNo number(12) unique, dep_id number(2), constraint dep_emp_fk foreign key (dep_id) references dep(d_id) );
+create table emp(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobileNo number(12) unique, dep_id number(2), constraint dep_emp_fk foreign key (dep_id) references dep(d_id) )
+                                                                                                                                                                            *
+ERROR at line 1:
+ORA-02264: name already used by an existing constraint
+
+
+SQL> create table emp(e_id number(2) primary key, e_name varchar2(12) not null, salary number(7,2) check(salary<50000), mobileNo number(12) unique, dep_id number(2), constraint d_emp_fk foreign key (dep_id) references dep(d_id) );
+
+Table created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'runa', 34000, 0173523525, 60);
+
+1 row created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'tiani', 34300, 0173544425, 40);
+insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'tiani', 34300, 0173544425, 40)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (SYSTEM.D_EMP_FK) violated - parent key not
+found
+
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'tiani', 34300, 0173544425, 50);
+
+1 row created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'ruti', 34300, 0173544425, 70 );
+insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'ruti', 34300, 0173544425, 70 )
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C007118) violated
+
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'ruti', 34300, 0173543555, 70 );
+
+1 row created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'roni', 35460, 01567743555, 80 );
+
+1 row created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'rrita', 35460, 0156774445, 80 );
+
+1 row created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'rtyua', 35460, 0167774445, 80 );
+
+1 row created.
+
+SQL> insert into emp(e_id, e_name, salary, mobileNo, dep_id) values(emp_seq.nextval, 'rsdsa', 35460, 0145454445, 60 );
+
+1 row created.
+
+SQL> select * from emp;
+
+      E_ID E_NAME           SALARY   MOBILENO     DEP_ID
+---------- ------------ ---------- ---------- ----------
+        11 runa              34000  173523525         60
+        21 tiani             34300  173544425         50
+        31 ruti              34300  173543555         70
+        36 roni              35460 1567743555         80
+        41 rrita             35460  156774445         80
+        46 rtyua             35460  167774445         80
+        51 rsdsa             35460  145454445         60
+
+7 rows selected.
+
+SQL> update dep set d_name = football where d_id =50;
+update dep set d_name = football where d_id =50
+                        *
+ERROR at line 1:
+ORA-00904: "FOOTBALL": invalid identifier
+
+
+SQL> update dep set d_name = 'football' where d_id =50;
+
+1 row updated.
+
+SQL> select * from dep;
+
+      D_ID D_NAME
+---------- ------------
+        50 football
+        60 Accounting
+        70 Marketing
+        80 Management
+        90 Mana
+
+SQL> update emp set e_name ='russia' where e_id = 51;
+
+1 row updated.
+
+SQL> select * from emp;
+
+      E_ID E_NAME           SALARY   MOBILENO     DEP_ID
+---------- ------------ ---------- ---------- ----------
+        11 runa              34000  173523525         60
+        21 tiani             34300  173544425         50
+        31 ruti              34300  173543555         70
+        36 roni              35460 1567743555         80
+        41 rrita             35460  156774445         80
+        46 rtyua             35460  167774445         80
+        51 russia            35460  145454445         60
+
+7 rows selected.
+
+SQL> create view empvw as select e_id, e_name, d_name from epm where d_id = 80;
+create view empvw as select e_id, e_name, d_name from epm where d_id = 80
+                                                      *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+SQL> create view empvw as select e_id, e_name, d_name from emp where dep_id = 80;
+create view empvw as select e_id, e_name, d_name from emp where dep_id = 80
+                                          *
+ERROR at line 1:
+ORA-00904: "D_NAME": invalid identifier
+
+
+SQL> create view empvw as select e_id, e_name from emp where dep_id = 80;
+
+View created.
+
+SQL> select * from empvw;
+
+      E_ID E_NAME
+---------- ------------
+        36 roni
+        41 rrita
+        46 rtyua
+
+SQL>
