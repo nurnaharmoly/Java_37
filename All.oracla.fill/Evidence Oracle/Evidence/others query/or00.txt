@@ -1,8 +1,0 @@
-alter table exam
-add studentid number(10);
-
-
-update exam 
-set studentid=(select studentid
-from students
-where students.studentname=exam.studentname);
