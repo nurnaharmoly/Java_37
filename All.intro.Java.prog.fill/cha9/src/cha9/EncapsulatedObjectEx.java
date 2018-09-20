@@ -18,7 +18,14 @@ public class EncapsulatedObjectEx {
     }
          void mayPlane(){
         System.out.println("My plane default");
-    
+         }
+         protected void myAxe(){
+             System.out.println("My myAxe Protected");
+         }
+
+    public static int getId() {
+        return id;
     }
+         
   
 }
