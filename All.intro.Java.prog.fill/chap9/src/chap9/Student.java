@@ -1,6 +1,10 @@
 
 package chap9;
 public class Student {
+
+    public static void displayDetails(Student student) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     int id;
     String name;
@@ -13,6 +17,10 @@ public class Student {
         s1.setId(1000);
         s1.setName("Mr AAAAAAAA");
         System.out.println(s1);        
+    }
+
+    public Student(int i, String mr_Trump) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void setId(int id) {
