@@ -22,7 +22,22 @@ public class PalindomeEx {
       if (newStr.equalsIgnoreCase(s)){
        status = true;
       }
-     return status;
+0
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        return status;
      }
     
     public static int countPalimdom(String[] s){
