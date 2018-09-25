@@ -1,14 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package cha10;
 
-/**
- *
- * @author User
- */
+package cha10;
 public class StackOfIntegers {
+    private int [] elements;
+    private int size;
+    public static final int DEFAULT_CAPACITY = 16;
+
+    public StackOfIntegers() {
+        this (DEFAULT_CAPACITY);
+    }
+
+    public StackOfIntegers(int capacity) {
+       elements = new int [capacity];
+    }
+    
+    public void push(int value){
+    if(size >= elements.length){
+        int[] temp = new int[elements.length *2];
+        System.arraycopy(elements, 0, temp, 0, elements.length);
+    
+    }
+    }
+    
+    
+    
     
 }
