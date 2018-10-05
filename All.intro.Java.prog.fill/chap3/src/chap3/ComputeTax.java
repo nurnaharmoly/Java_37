@@ -37,7 +37,7 @@ public class ComputeTax {
                 System.exit(1);
                 
                         }
-        System.out.println("Tax is " + (int))(tax * 100)/ 100.0);
+        
     }
             
     
