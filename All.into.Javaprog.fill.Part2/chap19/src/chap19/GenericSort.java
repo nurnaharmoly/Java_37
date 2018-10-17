@@ -16,13 +16,13 @@ package chap19;
   sort(stringArray); 
   // Display the sorted arrays 
   System.out.print("Sorted Integer objects: "); 
-  printList(intArray); 
+y888  printList(intArray); 
   System.out.print("Sorted Double objects: "); 
   printList(doubleArray); 
   System.out.print("Sorted Character objects: "); 
   printList(charArray); 
   System.out.print("Sorted String objects: ");
-  printList(stringArray); 33    } 
+  printList(stringArray);     } 
 
 /** Sort an array of comparable objects */ 
  public static <E extends Comparable<E>> void sort(E[] list) { 
@@ -32,6 +32,8 @@ package chap19;
     private static void printList(Integer[] intArray) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
  int currentMinIndex; 
  for (int i = 0; i < list.length - 1; i++) {
       // Find the minimum in the list[i+1..list.length-2] 
