@@ -36,6 +36,7 @@
 /All.into.Javaprog.fill.Part2/cha23/build/
 /All.intro.Java.prog.fill/cha24/nbproject/private/
 /All.intro.Java.prog.fill/cha24/build/
+<<<<<<< HEAD
 /All.intro.Java.prog.fill/cha25/nbproject/private/
 /All.intro.Java.prog.fill/stryy/nbproject/private/
 /All.intro.Java.prog.fill/swing/nbproject/private/
@@ -50,3 +51,11 @@
 /All.Adv.JavaProg/Ex_01/nbproject/private/
 /All.Adv.JavaProg/Eve/nbproject/private/
 /All.Adv.JavaProg/Eve/build/
+=======
+/All.into.Javaprog.fill.Part2/chap17/nbproject/private/
+/All.into.Javaprog.fill.Part2/chap17/build/
+/All.into.Javaprog.fill.Part2/chap19/nbproject/private/
+/All.into.Javaprog.fill.Part2/chap19/build/
+/All.Adv.Java.Pro.part2/SwingTest/nbproject/private/
+/All.Adv.Java.Pro.part2/SwingTest/build/
+>>>>>>> e80d02f6bcda98eb65003b298e5b1085ef0ca2e4
