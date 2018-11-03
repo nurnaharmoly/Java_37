@@ -5,6 +5,13 @@
  */
 package eve;
 
+import static java.nio.file.Files.list;
+import java.util.ArrayList;
+import static java.util.Collections.list;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author User
@@ -56,9 +63,10 @@ public class Evidence extends javax.swing.JFrame {
         btnExit = new javax.swing.JButton();
         btnCleTable = new javax.swing.JButton();
         btnReFroFile = new javax.swing.JButton();
+        lblMsg = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblDisplay = new javax.swing.JTable();
 
         jButton1.setText("jButton1");
 
@@ -103,6 +111,12 @@ public class Evidence extends javax.swing.JFrame {
 
         jLabel7.setText("Note:");
 
+        txName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txNameActionPerformed(evt);
+            }
+        });
+
         txAge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txAgeActionPerformed(evt);
@@ -111,6 +125,11 @@ public class Evidence extends javax.swing.JFrame {
 
         buttonGroup1.add(rdMale);
         rdMale.setText("Male");
+        rdMale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdMaleActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(rdFemale);
         rdFemale.setText("Female");
@@ -155,6 +174,11 @@ public class Evidence extends javax.swing.JFrame {
         });
 
         btnclear.setText("Clear");
+        btnclear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnclearActionPerformed(evt);
+            }
+        });
 
         btnExit.setText("Exit");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
@@ -171,6 +195,14 @@ public class Evidence extends javax.swing.JFrame {
         });
 
         btnReFroFile.setText("Read From File");
+        btnReFroFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReFroFileActionPerformed(evt);
+            }
+        });
+
+        lblMsg.setForeground(new java.awt.Color(0, 102, 102));
+        lblMsg.setText("jLabel10");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -222,7 +254,8 @@ public class Evidence extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnAdd)
                         .addGap(33, 33, 33)
-                        .addComponent(btnclear)))
+                        .addComponent(btnclear))
+                    .addComponent(lblMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addComponent(btnExit)
                 .addGap(43, 43, 43))
@@ -266,7 +299,9 @@ public class Evidence extends javax.swing.JFrame {
                         .addGap(79, 79, 79))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
                     .addComponent(btnclear)
@@ -275,14 +310,14 @@ public class Evidence extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCleTable)
                     .addComponent(btnReFroFile))
-                .addContainerGap(242, Short.MAX_VALUE))
+                .addGap(242, 242, 242))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 204, 204));
         jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel3.setForeground(new java.awt.Color(0, 102, 102));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDisplay.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null}
@@ -291,7 +326,7 @@ public class Evidence extends javax.swing.JFrame {
                 "Name", "Email", "Age", "Gender", "Round", "Hobby", "Note"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(tblDisplay);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -338,7 +373,19 @@ public class Evidence extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    public boolean CheckEmailValidityNew(String email){
+        
+        int atpos = email.indexOf("@");
+        int dotpos = email.lastIndexOf(".");
+        
+        if( atpos > 1 && dotpos < email.length() - 3 && atpos < dotpos - 1 && email.length() >=7){
+         return true;
+        }else{
+         return false;
+        }
+            
+    
+    }
     private void txAgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txAgeActionPerformed
     }//GEN-LAST:event_txAgeActionPerformed
 
@@ -356,19 +403,131 @@ public class Evidence extends javax.swing.JFrame {
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnCleTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCleTableActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblDisplay.getModel();
+        model.setRowCount(0);
     }//GEN-LAST:event_btnCleTableActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        String name = "", email = "", age = "0",gender = "", hoby = "", round = "", note = "";
+        String name = "", email = "", age = "0",gender = "", hobby = "", round = "", note = "";
         
-        if()
+        if(txName.getText().length()<1){
+            JOptionPane.showMessageDialog(null, "Enter The Name");
+        }
+        else if(!CheckEmailValidityNew(txEmail.getText()) || txEmail.getText().length()<1){
+            JOptionPane.showMessageDialog(null, "Enter The Email");
+        }
+        else if(Integer.parseInt(txAge.getText()) < 18 || Integer.parseInt(txAge.getText()) > 70){
+            JOptionPane.showMessageDialog(null, "Enter The Age");
+        }
+        else if(buttonGroup1.getSelection().isSelected() == false){
+            JOptionPane.showMessageDialog(null, "Select The gender");
+        }
+        else if(!chkReading.isSelected() && !chkCoding.isSelected() && !chkWalking.isSelected()){
+            JOptionPane.showMessageDialog(null, "Select The Hobby");
+        }
+        else if(comRound.getItemAt(comRound.getSelectedIndex()) == "Select Round"){
+            JOptionPane.showMessageDialog(null, "Select The Round");
+        }
+        else if(txArNote.getText().length()<5){
+            JOptionPane.showMessageDialog(null, "Enter The Note");
+        }else{
+        name = txName.getText();
+        email = txEmail.getText();
+        age = txAge.getText();
+        
+        if(rdMale.isSelected()){
+        gender = rdMale.getText();
+        }
+        if(rdFemale.isSelected()){
+        gender = rdFemale.getText();
+        }
+        
+        if(chkReading.isSelected()){
+        hobby += chkReading.getText()+ " ";
+        }
+        if(chkWalking.isSelected()){
+        hobby += chkWalking.getText()+ " ";
+        }
+        if(chkCoding.isSelected()){
+        hobby += chkCoding.getText()+ " ";
+        }
+        
+        round = comRound.getItemAt(comRound.getSelectedIndex());
+        age = txAge.getText();
+        
+        Student student = new Student(name, email, Integer.parseInt(age), gender, hobby, round, note);
+        List<Student> students = new ArrayList<>();
+        students.add(student);
+        
+            DefaultTableModel model = (DefaultTableModel) tblDisplay.getModel();
+            Object []row = new Object[7];
+            
+            for(int i = 0; i < students.size(); i++){
+                row[0] = students.get(i).getName();
+                row[1] = students.get(i).getEmail();
+                row[2] = students.get(i).getAge();
+                row[3] = students.get(i).getGender();
+                row[4] = students.get(i).getHobby();
+                row[5] = students.get(i).getRound();
+                row[6] = students.get(i).getNote();
+                model.addRow(row);
+                
+                try {
+                    Utils.writeTofile("nila", students);
+                } catch (Exception e) {
+                }
+            
+            lblMsg.setText("Successfully Added into Table and Write to FIle ");
+            }
+        }
         
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void txNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txNameActionPerformed
+
+    private void btnReFroFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReFroFileActionPerformed
+        // TODO add your handling code here:
+        String columns[] = {"Name", "Email", "Age", "Gender", "Hobby", "Round", "Note"};
+        DefaultTableModel tableModel;
+        
+        tableModel = new DefaultTableModel(0,7);
+        tableModel.setColumnIdentifiers(columns);
+        tblDisplay.setModel(tableModel);
+        Utils.displayStudentsdataFromFile("nila", tableModel);
+        
+    }//GEN-LAST:event_btnReFroFileActionPerformed
+
+    private void btnclearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnclearActionPerformed
+        // TODO add your handling code here:
+        txName.setText("");
+        txEmail.setText("");
+        txAge.setText("0");
+        
+        rdMale.setSelected(true);
+    
+        
+        chkReading.setSelected(false);
+        chkCoding.setSelected(false);
+        chkWalking.setSelected(false);
+        
+        comRound.setSelectedIndex(0);
+        txArNote.setText("");
+        lblMsg.setText("");
+        
+       
+    }//GEN-LAST:event_btnclearActionPerformed
+
+    private void rdMaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdMaleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdMaleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -431,9 +590,10 @@ public class Evidence extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblMsg;
     private javax.swing.JRadioButton rdFemale;
     private javax.swing.JRadioButton rdMale;
+    private javax.swing.JTable tblDisplay;
     private javax.swing.JTextField txAge;
     private javax.swing.JTextArea txArNote;
     private javax.swing.JTextField txEmail;

@@ -11,7 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-public class utils {
+public class Utils {
     
     public static void writeTofile(String filname, List<Student> students) throws Exception {
         File destFile = new File(filname + ".txt" );
@@ -38,6 +38,7 @@ public class utils {
                     { 
                     model.addRow(line.split(", "));
                     }
+            reader.close();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Buffered Reder issue.");
         }

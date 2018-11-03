@@ -2,7 +2,7 @@ package addjavaevedince;
 
 public class Student {
 
-    private int ID;
+    private String ID;
     private String name;
     private String PassWord;
     private String email;
@@ -15,7 +15,7 @@ public class Student {
     public Student() {
     }
 
-    public Student(int ID, String name, String PassWord, String email, int age, String gender, String hobby, String round, String Mag) {
+    public Student(String ID, String name, String PassWord, String email, int age, String gender, String hobby, String round, String Mag) {
         this.ID = ID;
         this.name = name;
         this.PassWord = PassWord;
@@ -27,11 +27,7 @@ public class Student {
         this.Mag = Mag;
     }
 
-    Student(String id, String name, String pw, String email, int parseInt, String gender, String hobby, String round, String mag) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
@@ -66,6 +62,9 @@ public class Student {
     public String getMag() {
         return Mag;
     }
+
+    
+
     
     
 
