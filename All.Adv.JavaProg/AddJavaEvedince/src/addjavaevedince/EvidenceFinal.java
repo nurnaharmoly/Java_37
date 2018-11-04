@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  *
@@ -138,10 +139,20 @@ public class EvidenceFinal extends javax.swing.JFrame {
         });
 
         butClear.setText("Clear");
+        butClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butClearActionPerformed(evt);
+            }
+        });
 
         butExit.setText("Exit");
 
         butClearTable.setText("ClearTable");
+        butClearTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butClearTableActionPerformed(evt);
+            }
+        });
 
         butReadFile.setText("Read From File");
         butReadFile.addActionListener(new java.awt.event.ActionListener() {
@@ -156,9 +167,10 @@ public class EvidenceFinal extends javax.swing.JFrame {
             }
         });
 
-        jpass.setText("jPasswordField1");
+        txtAge.setText("0");
 
         buttonGroup1.add(radMale);
+        radMale.setSelected(true);
         radMale.setText("Male");
 
         buttonGroup1.add(radFemale);
@@ -379,17 +391,14 @@ public class EvidenceFinal extends javax.swing.JFrame {
         }
         else if(Integer.parseInt(txtAge.getText()) < 18 || Integer.parseInt(txtAge.getText()) > 70){
         JOptionPane.showMessageDialog(null, "Enter Your Age");
-        } 
-        
+        }else if(!chkReading.isSelected() && !chkWriting.isSelected() && !chkCoding.isSelected() ){
+            JOptionPane.showMessageDialog(null, "Enter Your Hobby");
+        }
         else if(buttonGroup1.getSelection().isSelected() == false){
             JOptionPane.showMessageDialog(null, "Enter Your Gender");
-        }
-        
-        
-         else if(cmbRound.getItemAt(cmbRound.getSelectedIndex()) == "Selected A Round"){
+        }else if(cmbRound.getItemAt(cmbRound.getSelectedIndex()) == "Selected A Round"){
             JOptionPane.showMessageDialog(null, "Enter Your Round");
-        }
-         else if(txtAreaMeg.getText().length() <5){
+        } else if(txtAreaMeg.getText().length() <5){
             JOptionPane.showMessageDialog(null, "Enter Your Message");
         } else {
               id = txtID.getText();
@@ -471,6 +480,31 @@ public class EvidenceFinal extends javax.swing.JFrame {
             Logger.getLogger(EvidenceFinal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_butReadFileActionPerformed
+
+    private void butClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butClearActionPerformed
+        // TODO add your handling code here:
+        txtID.setText("");
+        txtName.setText("");
+        jpass.setText("");
+        txtEmail.setText("");
+        txtAge.setText("0");
+        
+        buttonGroup1.clearSelection();
+        chkReading.setSelected(false);
+        chkWriting.setSelected(false);
+        chkCoding.setSelected(false);
+        
+        cmbRound.setSelectedIndex(0);
+        txtAreaMeg.setText("");
+        lblMsg.setText("");
+        
+    }//GEN-LAST:event_butClearActionPerformed
+
+    private void butClearTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butClearTableActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblDisplay.getModel();
+        model.setRowCount(0);
+    }//GEN-LAST:event_butClearTableActionPerformed
 
     /**
      * @param args the command line arguments

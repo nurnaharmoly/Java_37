@@ -117,6 +117,7 @@ public class Evidence extends javax.swing.JFrame {
             }
         });
 
+        txAge.setText("0");
         txAge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txAgeActionPerformed(evt);
@@ -124,6 +125,7 @@ public class Evidence extends javax.swing.JFrame {
         });
 
         buttonGroup1.add(rdMale);
+        rdMale.setSelected(true);
         rdMale.setText("Male");
         rdMale.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

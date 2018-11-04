@@ -34,7 +34,7 @@ public class Utils {
          }
             PrintWriter out = new PrintWriter(new FileWriter(destFile, true));
             for(Student s : students){
-            out.append(s.getID()+", "+ s.getName()+", "+ s.getPassWord()+ ", "+ s.getEmail()+", " +s.getAge()+", "+ s.getGender()+", "+ s.getHobby()+", "+ s.getRound()+","+ s.getMag() + "\n");
+            out.append(s.getID()+", "+ s.getName()+", "+ s.getPassWord()+ ", "+ s.getEmail()+", " +s.getAge()+", "+ s.getGender()+", "+ s.getHobby()+", "+ s.getRound()+", "+ s.getMag() + "\n");
             }
             out.close();
         } catch (Exception e) {
