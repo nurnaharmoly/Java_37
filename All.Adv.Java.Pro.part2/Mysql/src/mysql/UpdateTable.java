@@ -20,9 +20,6 @@ public class UpdateTable {
         }
 }
 
-    static class updateData {
-
-        public updateData() {
-        }
-    }
+   
+    
 }

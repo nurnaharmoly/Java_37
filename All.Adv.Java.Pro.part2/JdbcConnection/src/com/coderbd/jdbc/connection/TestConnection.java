@@ -1,7 +1,10 @@
 
 package com.coderbd.jdbc.connection;
+
+import java.sql.Connection;
+
 public class TestConnection {
     public static void main(String[] args) {
-        MySqlDbConnection.getConnection();
+        Connection conn = MySqlDbConnection.getConnection();
     }
 }
