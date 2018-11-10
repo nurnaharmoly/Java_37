@@ -12,7 +12,7 @@ public class CreateTableUsingMysql {
     private static Connection conn = MySqlDbConnecsion.getConnection();
     
     public static void createTable(){
-    String sql = "create table student_table (id int(11) primary key, name varchar(30))";
+    String sql = "create table student_table (id int(11) primary key, name varchar(23))";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.executeUpdate();

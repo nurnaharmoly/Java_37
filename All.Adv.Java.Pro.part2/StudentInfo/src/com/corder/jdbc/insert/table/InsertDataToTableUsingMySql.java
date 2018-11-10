@@ -15,7 +15,7 @@ public class InsertDataToTableUsingMySql {
     
     public static void insertDataTOTable(StudentInfo s){
      
-        String sql = "insert into student_table(id, name, email) values(?,?)";
+        String sql = "insert into student_table(id, name, email) values(?,?,?)";
         
         try {
             PreparedStatement ps = conn.prepareStatement(sql);

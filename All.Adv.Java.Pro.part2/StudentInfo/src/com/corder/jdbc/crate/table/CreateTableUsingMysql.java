@@ -14,7 +14,7 @@ public class CreateTableUsingMysql {
     
     public static void createTable(){
     
-        String sql = "create table student_table(id int(7) primary key, name varchar(20), email varchar(23))";
+        String sql = "create table student_table(id int(7) primary key, name varchar(20), email varchar(35))";
         
         try {
             PreparedStatement ps = conn.prepareStatement(sql);

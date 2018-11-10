@@ -6,6 +6,7 @@
 package com.corder.jdbc.view;
 
 import com.corder.jdbc.dom.stu.StudentInfo;
+import com.corder.jdbc.insert.table.InsertDataToTableUsingMySql;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,6 +21,7 @@ public class ViewStudetForm extends javax.swing.JFrame {
      */
     public ViewStudetForm() {
         initComponents();
+        displayStudentList();
     }
 
     /**
@@ -138,11 +140,17 @@ public class ViewStudetForm extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
+        StudentInfo stfo = new StudentInfo();
+        stfo.setId(Integer.parseInt(txtId.getText()));
+        stfo.setName(txtName.getText());
+        stfo.setEmail(txtEmail.getText());
         
+        InsertDataToTableUsingMySql.insertDataTOTable(stfo);
+        displayStudentList();
         
-        
-       
-        List<StudentInfo> li = ListDataStudent.getStudentList();
+    }//GEN-LAST:event_btnSubmitActionPerformed
+   public void displayStudentList(){
+   List<StudentInfo> li = ListDataStudent.getStudentList();
         StudentInfo std = li.get(li.size()-1);
         txtId.setText(String.valueOf(std.getId() + 1));
         
@@ -154,11 +162,12 @@ public class ViewStudetForm extends javax.swing.JFrame {
             row[0] = li.get(i).getId();
             row[1] = li.get(i).getName();
             row[2] = li.get(i).getEmail();
-            
-            
+            model.addRow(row);
         }
-    }//GEN-LAST:event_btnSubmitActionPerformed
-
+   
+   
+   
+   }
     /**
      * @param args the command line arguments
      */
