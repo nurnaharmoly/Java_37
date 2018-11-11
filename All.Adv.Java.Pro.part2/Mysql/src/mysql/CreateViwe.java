@@ -17,6 +17,7 @@ public class CreateViwe {
         try {
            PreparedStatement ps = conn.prepareStatement(sql);
            ps.setInt(1, id);
+           rs = ps.executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(CreateViwe.class.getName()).log(Level.SEVERE, null, ex);
         }
