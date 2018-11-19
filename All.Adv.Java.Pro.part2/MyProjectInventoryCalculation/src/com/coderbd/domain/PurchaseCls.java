@@ -13,11 +13,12 @@ public class PurchaseCls {
     private double totalPrice;
     private Date purchaseDate;
     ProductCatagoryCls productCatagoryCls;
+    UserCls userCls;
 
     public PurchaseCls() {
     }
 
-    public PurchaseCls(String productName, String productCode, int qty, double unitPrice, double totalPrice, Date purchaseDate, ProductCatagoryCls productCatagoryCls) {
+    public PurchaseCls(String productName, String productCode, int qty, double unitPrice, double totalPrice, Date purchaseDate, ProductCatagoryCls productCatagoryCls, UserCls userCls) {
         this.productName = productName;
         this.productCode = productCode;
         this.qty = qty;
@@ -25,7 +26,9 @@ public class PurchaseCls {
         this.totalPrice = totalPrice;
         this.purchaseDate = purchaseDate;
         this.productCatagoryCls = productCatagoryCls;
+        this.userCls = userCls;
     }
+
 
     public int getId() {
         return id;
@@ -91,10 +94,20 @@ public class PurchaseCls {
         this.productCatagoryCls = productCatagoryCls;
     }
 
+    public UserCls getUserCls() {
+        return userCls;
+    }
+
+    public void setUserCls(UserCls userCls) {
+        this.userCls = userCls;
+    }
+
     @Override
     public String toString() {
-        return "PurchaseCls{" + "id=" + id + ", productName=" + productName + ", productCode=" + productCode + ", qty=" + qty + ", unitPrice=" + unitPrice + ", totalPrice=" + totalPrice + ", purchaseDate=" + purchaseDate + ", productCatagoryCls=" + productCatagoryCls + '}';
+        return "PurchaseCls{" + "id=" + id + ", productName=" + productName + ", productCode=" + productCode + ", qty=" + qty + ", unitPrice=" + unitPrice + ", totalPrice=" + totalPrice + ", purchaseDate=" + purchaseDate + ", productCatagoryCls=" + productCatagoryCls + ", userCls=" + userCls + '}';
     }
+
+    
     
     
 }
