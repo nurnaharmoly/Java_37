@@ -15,7 +15,7 @@ public class InsertDataProductTable {
     
     public static void insertDataProductTable(ProductDomCls p){
         
-        String sql = "insert into product_table(Pro_name, qty, unit_price, total_price, purchase_date, cat_id)";
+        String sql = "insert into product_table(Pro_name, qty, unit_price, total_price, purchase_date, cat_id) values(?,?,?,?,?,?)";
         
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
