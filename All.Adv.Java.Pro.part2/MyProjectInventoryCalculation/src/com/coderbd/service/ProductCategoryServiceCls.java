@@ -44,7 +44,7 @@ public class ProductCategoryServiceCls {
    public static List<ProductCatagoryCls> getCatList(){
     List<ProductCatagoryCls> list = new ArrayList<>();
     
-    String sql = "select from category";
+    String sql = "select * from category";
     
        try {
            PreparedStatement ps = conn.prepareStatement(sql);

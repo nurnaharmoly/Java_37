@@ -11,16 +11,16 @@ import java.util.List;
 public class SummaryClsTest {
     public static void main(String[] args) {
         //SummaryServiceCls.createTable();
-        /*PurchaseCls pur = new PurchaseCls();
+        PurchaseCls pur = new PurchaseCls();
         pur.setId(1);
         SummaryCls sc = new SummaryCls("HP 5000", "HP5000", 50, 0, 50, new Date(), pur);
-        SummaryServiceCls.insert(sc); */
+        SummaryServiceCls.insert(sc); 
         
-        List<SummaryCls> list = SummaryServiceCls.getSummaryList();
-        for (SummaryCls s : list) {
-            System.out.println(s);  
+       // List<SummaryCls> list = SummaryServiceCls.getSummaryList();
+        //for (SummaryCls s : list) {
+          //  System.out.println(s);  
         }
                 
         
     }
-}
+
