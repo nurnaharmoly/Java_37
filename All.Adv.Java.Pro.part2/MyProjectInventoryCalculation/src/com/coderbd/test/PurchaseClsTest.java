@@ -12,14 +12,14 @@ public class PurchaseClsTest {
     public static void main(String[] args) {
         //PurchaseServiceCls.createTable();
         
-       ProductCatagoryCls pro = new ProductCatagoryCls();
-        pro.setId(3);
+      ProductCatagoryCls pro = new ProductCatagoryCls();
+        pro.setId(1);
         
         UserCls uc = new UserCls();
-        uc.setId(1);
+        uc.setId(2);
         
-        PurchaseCls pc = new PurchaseCls("ASUS VivoBook S510U", "ASUSVivoBookS510U", 50, 50000, 25000000 , new Date(), pro, uc);
-        PurchaseServiceCls.insertMain(pc); 
+        PurchaseCls pc = new PurchaseCls("dell 1400", "dell1600", 20, 4000, 80000 , new Date(), pro, uc);
+       PurchaseServiceCls.insertMain(pc);  
       
        
         //List<PurchaseCls> list = PurchaseServiceCls.getProductList();

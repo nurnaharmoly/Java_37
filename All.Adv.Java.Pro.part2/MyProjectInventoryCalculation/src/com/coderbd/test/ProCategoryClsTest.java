@@ -7,8 +7,8 @@ import com.coderbd.service.ProductCategoryServiceCls;
 public class ProCategoryClsTest {
     public static void main(String[] args) {
         //ProductCategoryServiceCls.createTable();
-        ProductCatagoryCls cat = new ProductCatagoryCls();
-        cat.setName("Laptop");
+       ProductCatagoryCls cat = new ProductCatagoryCls();
+        cat.setName("speker");
         
         ProductCategoryServiceCls.insert(cat);
     }
